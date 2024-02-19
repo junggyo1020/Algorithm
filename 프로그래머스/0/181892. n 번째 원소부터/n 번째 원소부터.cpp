@@ -5,8 +5,10 @@ using namespace std;
 
 vector<int> solution(vector<int> num_list, int n) {
     vector<int> answer;
-    for(int i=n-1;i<num_list.size();i++){
-        answer.push_back(num_list[i]);
+    int i = 1;
+    for(auto c:num_list){
+        if(i>=n) answer.push_back(c);
+        i++;
     }
     return answer;
 }
