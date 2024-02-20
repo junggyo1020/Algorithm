@@ -1,11 +1,7 @@
-#include <string>
-#include <vector>
-#include <numeric>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 string solution(vector<string> arr) {
-    string answer = "";
-    answer = accumulate(arr.begin(),arr.end(),string(""));
-    return answer;
+    return accumulate(arr.begin(),arr.end(),string(""));
 }
