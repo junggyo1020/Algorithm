@@ -1,12 +1,9 @@
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 vector<int> solution(int start_num, int end_num) {
-    vector<int> answer;
-    for(int i = start_num; i<=end_num; i++){
-        answer.push_back(i);
-    }
+    vector<int> answer(end_num-start_num+1);
+    iota(answer.begin(),answer.end(),start_num);
     return answer;
 }
