@@ -4,14 +4,5 @@
 using namespace std;
 
 int solution(string my_string, string is_prefix) {
-    int answer = 0;
-    if(my_string.length()>=is_prefix.length()){
-        for(int i=0;i<is_prefix.length();i++){
-            if(my_string[i]==is_prefix[i]){answer = 1;}
-            else{
-                answer = 0; break;
-            }
-        }
-    }
-    return answer;
+    return my_string.substr(0,is_prefix.length()) == is_prefix;
 }
