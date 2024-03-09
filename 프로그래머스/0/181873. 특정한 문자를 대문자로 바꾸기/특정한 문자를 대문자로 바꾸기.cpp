@@ -5,8 +5,8 @@ using namespace std;
 
 string solution(string my_string, string alp) {
     for(auto& c:my_string){
-        for(int i=0;i<alp.length();i++){
-            if(c==alp[i]){
+        for(auto& a:alp){
+            if(c==a){
                 c = toupper(c);
             }
         }
