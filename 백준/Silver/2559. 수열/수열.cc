@@ -11,29 +11,21 @@
 /* ************************************************************************** */
 #include <bits/stdc++.h>
 using namespace std;
+typedef long long ll;
+int n, k, temp, psum[100001], ret = -10000004;
 int main()
 {
     ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-    int n, k;
     cin >> n >> k;
-    vector<int> temp(n);
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
-        cin >> temp[i];
+        cin >> temp;
+        psum[i] = psum[i - 1] + temp;
     }
-    // K개 씩 더한 값 배열에 저장
-    int sum = 0;
-    for (int i = 0; i < k; i++)
+    for (int i = k; i <= n; i++)
     {
-        sum += temp[i];
+        ret = max(ret, psum[i] - psum[i - k]);
     }
-    // Max값 구하기
-    int max_sum = sum;
-    for (int i = k; i < n; i++)
-    {
-        sum += temp[i] - temp[i - k];
-        max_sum = max(max_sum, sum);
-    }
-    cout << max_sum << '\n';
+    cout << ret << '\n';
     return 0;
 }
