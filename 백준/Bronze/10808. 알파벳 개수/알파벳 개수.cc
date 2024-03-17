@@ -16,13 +16,17 @@ int main()
 {
     fastio;
     string s;
+    int alpha[26] = {
+        0,
+    };
     cin >> s;
-    int arr[26] = {0};
-    for (int i = 0; i < s.length(); i++)
+    for (char ch : s)
     {
-        arr[s[i] - 'a']++;
+        alpha[ch - 'a']++;
     }
-    for (int i = 0; i < 26; i++)
-        cout << arr[i] << " ";
+    for (int i : alpha)
+    {
+        cout << i << " ";
+    }
     return 0;
 }
