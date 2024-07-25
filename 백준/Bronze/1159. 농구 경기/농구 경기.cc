@@ -1,45 +1,34 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                      :::    :::    :::     */
-/*   Problem Number: 1159                              :+:    :+:      :+:    */
-/*                                                    +:+    +:+        +:+   */
-/*   By: jungyo1020 <boj.kr/u/jungyo1020>            +#+    +#+          +#+  */
-/*                                                  +#+      +#+        +#+   */
-/*   https://boj.kr/1159                           #+#        #+#      #+#    */
-/*   Solved: 2024/03/16 23:15:14 by jungyo1020    ###          ###   ##.kr    */
-/*                                                                            */
-/* ************************************************************************** */
 #include <bits/stdc++.h>
-#define fastio ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0)
-#define endl "\n"
 using namespace std;
-string arr[150];
-string answer = "";
 int n;
-int cnt[26];
+int a[26];
 int main()
 {
-    fastio;
     cin >> n;
+
+    // 성의 개수를 저장하는 배열 생성
     for (int i = 0; i < n; i++)
     {
-        cin >> arr[i];
-        cnt[arr[i][0] - 'a']++;
+        string s;
+        cin >> s;
+        a[s[0] - 'a']++;
     }
+    // 같은 성이 5명 이상인 선수의 성의 첫글자 출력
+    string result;
     for (int i = 0; i < 26; i++)
     {
-        if (cnt[i] >= 5)
+        if (a[i] >= 5)
         {
-            answer += (char)(i + 'a');
+            result += (char)('a' + i);
         }
     }
-    if (answer != "")
+    if (result.empty())
     {
-        cout << answer << '\n';
+        cout << "PREDAJA" << "\n";
     }
     else
     {
-        cout << "PREDAJA" << '\n';
+        cout << result << "\n";
     }
     return 0;
 }
