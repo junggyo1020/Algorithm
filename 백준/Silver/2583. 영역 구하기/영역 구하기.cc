@@ -1,56 +1,81 @@
 #include <bits/stdc++.h>
 using namespace std;
-bool range[101][101];
-bool visited[101][101];
-int M, N, K;
-void DFS(int y, int x, int &area) {
-    visited[y][x] = true;
-    area++;
+const int dy[] = {-1, 0, 1, 0};
+const int dx[] = {0, 1, 0, -1};
+const int max_n = 101;
+int n, m, k, sx, sy, ex, ey, cnt;
+int a[max_n][max_n], visited[max_n][max_n];
+vector<int> areas;
+int bfs(int y, int x)
+{
+    queue<pair<int, int>> q;
+    visited[y][x] = 1;
+    q.push({y, x});
+    int area = 0;
+    while (!q.empty())
+    {
+        tie(y, x) = q.front();
+        q.pop();
+        area++;
+        for (int i = 0; i < 4; i++)
+        {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
 
-    // -1 0 / +1 0 / 0 -1 / 0 +1
-    vector<pair<int, int> > wsad;
-    wsad.push_back({-1, 0});
-    wsad.push_back({+1, 0});
-    wsad.push_back({0, -1});
-    wsad.push_back({0, +1});
-
-    for (int i = 0; i < 4; i++) {
-        int nextY = y + wsad[i].first;
-        int nextX = x + wsad[i].second;
-        bool yCheck = (nextY >= 0) && (nextY < M);
-        bool xCheck = (nextX >= 0) && (nextX < N);
-        if (yCheck && xCheck) {
-            if (!range[nextY][nextX] && !visited[nextY][nextX])
-                DFS(nextY, nextX, area);
+            // 언더/오버플로우 체크
+            if (ny < 0 || ny >= m || nx < 0 || nx >= n)
+            {
+                continue;
+            }
+            // 이미 방문한 노드인지 체크
+            if (visited[ny][nx])
+            {
+                continue;
+            }
+            if (a[ny][nx] == 1)
+            {
+                continue;
+            }
+            visited[ny][nx] = 1;
+            q.push({ny, nx});
         }
     }
+    return area;
 }
-
-int main() {
-    vector<int> area;
-    cin >> M >> N >> K;
-    while (K--) {
-        int x1, y1, x2, y2;
-        cin >> x1 >> y1 >> x2 >> y2;
-        for (int i = y1; i < y2; i++) {
-            for (int j = x1; j < x2; j++) {
-                range[i][j] = true;
+int main()
+{
+    ios_base::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+    cin >> m >> n >> k;
+    // 직사각형 채우기
+    while (k--)
+    {
+        cin >> sx >> sy >> ex >> ey;
+        for (int i = sy; i < ey; i++)
+        {
+            for (int j = sx; j < ex; j++)
+            {
+                a[i][j] = 1;
             }
         }
     }
-    for (int i = 0; i < M; i++) {
-        for (int j = 0; j < N; j++) {
-            // 네모 영역이 아니면서 방문하지 않은 곳
-            if (!range[i][j] && !visited[i][j]) {
-                int ar = 0;
-                DFS(i, j, ar);
-                area.push_back(ar);
+    for (int i = 0; i < m; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            if (!visited[i][j] && a[i][j] == 0)
+            {
+                int area = bfs(i, j);
+                areas.push_back(area);
+                cnt++;
             }
         }
     }
-    sort(area.begin(), area.end());
-    cout << area.size() << '\n';
-    for (auto i : area) {
-        cout << i << " ";
+    sort(areas.begin(), areas.end());
+    cout << cnt << '\n';
+    for (int area : areas)
+    {
+        cout << area << ' ';
     }
+    cout << '\n';
+    return 0;
 }
