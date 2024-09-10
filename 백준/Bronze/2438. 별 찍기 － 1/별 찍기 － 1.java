@@ -10,9 +10,7 @@ class Main{
         int n = Integer.parseInt(br.readLine());
 
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= i; j++) {
-                bw.write("*");
-            }
+            bw.write("*".repeat(i));
             bw.write("\n");
         }
 
