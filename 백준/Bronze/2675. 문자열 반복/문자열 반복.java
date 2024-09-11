@@ -14,9 +14,7 @@ class Main{
             String s = inputs[1];
 
             for (int j = 0; j < s.length(); j++) {
-                for (int k = 0; k < r; k++) {
-                    bw.write(s.charAt(j));
-                }
+                bw.write(String.valueOf(s.charAt(j)).repeat(r));
             }
             bw.write("\n");
         }
