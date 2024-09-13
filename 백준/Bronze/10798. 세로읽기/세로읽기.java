@@ -1,29 +1,28 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 class Main{
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        String[] lines = new String[5];
+        String[] line = new String[5];
+
         for (int i = 0; i < 5; i++) {
-            lines[i] = br.readLine();
+            line[i] = br.readLine();
         }
 
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 5; j++) {
-                if (i < lines[j].length()) {
-                    result.append(lines[j].charAt(i));
+                if (i < line[j].length()) {
+                    result.append(line[j].charAt(i));
                 }
             }
         }
 
-        bw.write(result.toString());
-
-        bw.flush();
-        bw.close();
+        System.out.println(result);
     }
 }
