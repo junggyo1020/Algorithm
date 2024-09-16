@@ -11,7 +11,7 @@ class Main{
         int n = Integer.parseInt(br.readLine());
 
         //소수 찾기
-        boolean[] isPrime = new boolean[10001];
+        boolean[] isPrime = new boolean[n+1];
         Arrays.fill(isPrime, true);
         isPrime[0] = false;
         isPrime[1] = false;
@@ -25,12 +25,11 @@ class Main{
         }
 
         int sum = 0;
-        boolean flag = true;
-        int min = 0;
+        int min = Integer.MAX_VALUE;
+
         for (int i = m; i <= n; i++) {
             if (isPrime[i]) {
-                if(flag){
-                    flag = false;;
+                if(min == Integer.MAX_VALUE){
                     min = i;
                 }
                 sum += i;
