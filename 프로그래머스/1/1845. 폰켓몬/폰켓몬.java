@@ -2,22 +2,20 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] nums) {
+        
         int answer = 0;
-        int len = nums.length / 2;
+        
         HashSet<Integer> set = new HashSet<>();
         
-        for(int num : nums){
-            set.add(num);
+        for(int i : nums){
+            set.add(i);
         }
         
         int size = set.size();
         
-        if(size >= len){
-            answer = len;
-        } else {
-            answer = size;
-        }
+        int maxSize = nums.length/2;
         
+        answer = Math.min(size, maxSize);
         
         return answer;
     }
