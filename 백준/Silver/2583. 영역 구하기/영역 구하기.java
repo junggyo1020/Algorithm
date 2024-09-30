@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,9 +41,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (visited[i][j] == 0 && grid[i][j] == 0) {
-                    area = 0;
-                    dfs(i,j);
-                    list.add(area);
+                    list.add(dfs(i,j));
                     ret++;
                 }
             }
@@ -57,9 +56,9 @@ public class Main {
 
     }
 
-    public static void dfs(int y, int x){
+    public static int dfs(int y, int x){
         visited[y][x] = 1;
-        area++;
+        area = 1;
 
         for (int i = 0; i < 4; i++) {
             int ny = y + dy[i];
@@ -70,8 +69,9 @@ public class Main {
                 continue;
             }
             if(visited[ny][nx] == 0 && grid[ny][nx] == 0){
-                dfs(ny, nx);
+                area += dfs(ny, nx);
             }
         }
+        return area;
     }
 }
