@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main{
+public class Main {
+
+    static int n,m;
 
     static int[][] grid;
     static int[][] visited;
@@ -16,8 +18,8 @@ public class Main{
         // 테스트 케이스 반복
         for (int T = 0; T < t; T++) {
             String[] input = br.readLine().split(" ");
-            int m = Integer.parseInt(input[0]);
-            int n = Integer.parseInt(input[1]);
+            m = Integer.parseInt(input[0]);
+            n = Integer.parseInt(input[1]);
             int k = Integer.parseInt(input[2]);
             grid = new int[n][m];
             visited = new int[n][m];
@@ -35,7 +37,7 @@ public class Main{
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
                     if(visited[i][j] == 0 && grid[i][j] == 1){
-                        dfs(i,j,n,m);
+                        dfs(i,j);
                         count++;
                     }
                 }
@@ -45,7 +47,7 @@ public class Main{
         }
     }
 
-    public static void dfs(int y, int x,int n,int m) {
+    public static void dfs(int y, int x) {
         visited[y][x] = 1;
 
         for (int i = 0; i < 4; i++) {
@@ -56,7 +58,7 @@ public class Main{
                 continue;
             }
             if (visited[ny][nx] == 0 && grid[ny][nx] == 1) {
-                dfs(ny, nx, n, m);
+                dfs(ny, nx);
             }
         }
     }
