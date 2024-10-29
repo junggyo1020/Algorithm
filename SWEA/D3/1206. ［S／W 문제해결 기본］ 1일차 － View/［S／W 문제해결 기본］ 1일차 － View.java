@@ -1,40 +1,34 @@
 import java.util.Scanner;
+import java.io.FileInputStream;
+import java.util.*;
 
-class Solution {
-    public static void main(String args[]) throws Exception {
-        Scanner sc = new Scanner(System.in);
-        
-        // 테스트 케이스는 항상 10개로 주어진다.
-        for (int test_case = 1; test_case <= 10; test_case++) {
-            int n = sc.nextInt();  // 건물의 개수
-            int[] buildings = new int[n];
-
-            // 건물의 높이 입력
-            for (int i = 0; i < n; i++) {
-                buildings[i] = sc.nextInt();
+class Solution
+{
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		int T = 10;
+		
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+            int N = sc.nextInt();
+			int[] arr = new int[N+1];
+            int totalBuilding = 0;
+            for(int i = 0; i < N; i++){
+            	arr[i] = sc.nextInt();
             }
-
-            int viewCount = 0;  // 조망권이 확보된 세대의 수
-
-            // 2번째 건물부터 n-3번째 건물까지 확인
-            for (int i = 2; i < n - 2; i++) {
-                // 현재 빌딩의 왼쪽 2칸, 오른쪽 2칸의 최고 높이를 찾음
-                int leftMax = Math.max(buildings[i - 1], buildings[i - 2]);
-                int rightMax = Math.max(buildings[i + 1], buildings[i + 2]);
-
-                // 왼쪽과 오른쪽에서 가장 높은 건물의 높이
-                int maxAdjacentHeight = Math.max(leftMax, rightMax);
-
-                // 현재 건물이 양쪽 2칸 건물보다 높을 때 조망권 확보
-                if (buildings[i] > maxAdjacentHeight) {
-                    viewCount += (buildings[i] - maxAdjacentHeight);  // 확보된 세대의 수만큼 더함
+           
+            // 조망권이 확보된 빌딩 구하기
+            for(int i = 2; i < N-2; i++){
+            	if(arr[i-2] < arr[i] && arr[i-1] < arr[i] && arr[i+1] < arr[i] && arr[i+2] < arr[i]){
+                	// 최대값 찾기
+                    int maxValue = Math.max(Math.max(arr[i-2], arr[i-1]), Math.max(arr[i+1], arr[i+2]));
+                    totalBuilding += (arr[i] - maxValue);
                 }
             }
-
-            // 결과 출력
-            System.out.println("#" + test_case + " " + viewCount);
-        }
-
+            
+            System.out.println("#" + test_case + " " + totalBuilding);
+		}
         sc.close();
-    }
+	}
 }
