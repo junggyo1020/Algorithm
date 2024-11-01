@@ -57,22 +57,22 @@ class Solution
 
 		for(int test_case = 1; test_case <= T; test_case++)
 		{
-            int temp = sc.nextInt();
-			int[] counts = new int[101];
+			int testCaseNumber = sc.nextInt();
+            int[] count = new int[101];
             for(int i = 0; i < 1000; i++){
-            	counts[sc.nextInt()]++;
+            	count[sc.nextInt()]++;
             }
             
-            int maxValue = -1;
-            int maxIdx = -1;
-            for(int i = 100 ; i >= 0; i--){
-            	if(maxValue < counts[i]){
-                    maxIdx = i;
-                    maxValue = counts[i];
+            int maxCount = -1;
+            int result = -1;
+            for(int i = 100; i >= 0; i--){
+            	if(maxCount < count[i]){
+                	maxCount = count[i];
+                    result = i;
                 }
             }
             
-           	System.out.println("#" + test_case + " " + maxIdx);
+            System.out.println("#" + test_case + " " + result);
 		}
 	}
 }
