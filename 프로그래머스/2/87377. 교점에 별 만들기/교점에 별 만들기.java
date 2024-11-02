@@ -2,20 +2,22 @@ import java.util.*;
 
 class Solution {
     
-    private static class Point {
-        public final long x, y;
+    private static class Point{
+        public final long x;
+        public final long y;
         
-        private Point(long x, long y){
+        Point(long x, long y){
             this.x = x;
             this.y = y;
         }
     }
     
-    private Point intersection(long a1, long b1, long c1, long a2, long b2, long c2)     {
-        double x = (double)(b1*c2-b2*c1)/(a1*b2-a2*b1);
-        double y = (double)(a2*c1-a1*c2)/(a1*b2-a2*b1);
+    private Point intersection(long A, long B, long E, long C, long D, long F){
+        double x = (double)((B*F) - (E*D)) / ((A*D) - (B*C));
+        double y = (double)((E*C) - (A*F)) / ((A*D) - (B*C));
         
-        if(x % 1 != 0 || y % 1 != 0) return null; 
+        // 정수로만 표현되는 좌표만 입력하기
+        if(x % 1 != 0 || y % 1 != 0) return null;
         
         return new Point((long) x, (long) y);
     }
@@ -29,7 +31,7 @@ class Solution {
             if(p.y < y) y = p.y;
         }
         
-        return new Point(x,y);
+        return new Point(x, y);
     }
     
     private Point getMaximumPoint(List<Point> points){
@@ -41,22 +43,24 @@ class Solution {
             if(p.y > y) y = p.y;
         }
         
-        return new Point(x,y);
+        return new Point(x, y);
     }
     
     public String[] solution(int[][] line) {
         List<Point> points = new ArrayList<>();
         for(int i = 0; i < line.length; i++){
-            for(int j = i+1; j < line.length; j++){
-                Point intersection = intersection(line[i][0], line[i][1], line[i][2], 
-                                                   line[j][0], line[j][1], line[j][2]);
+            for(int j = i + 1; j < line.length; j++){
+                Point intersection = intersection(line[i][0], line[i][1], line[i][2],
+                                                  line[j][0], line[j][1], line[j][2]);
                 
-                if(intersection != null) {
+                // 교점이 있을 경우 리스트에 저장
+                if(intersection != null){
                     points.add(intersection);
                 }
             }
         }
         
+        // minimum과 maximum 포인트를 찾기
         Point minimum = getMinimumPoint(points);
         Point maximum = getMaximumPoint(points);
         
