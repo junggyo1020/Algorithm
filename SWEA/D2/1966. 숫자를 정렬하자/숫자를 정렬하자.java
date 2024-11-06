@@ -17,11 +17,11 @@ class Solution
             	arr[i] = sc.nextInt();
             }
             Arrays.sort(arr);
-            StringBuilder answer = new StringBuilder();
+            StringBuilder answer = new StringBuilder("#").append(test_case).append(" ");
             for(int a : arr){
-            	answer.append(Integer.toString(a)).append(" ");
+            	answer.append(a).append(" ");
             }
-            System.out.printf("#%d %s\n", test_case, answer.toString());
+            System.out.println(answer.toString().trim());
 		}
 	}
 }
