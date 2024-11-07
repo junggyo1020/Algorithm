@@ -1,64 +1,58 @@
-
 import java.util.Scanner;
 import java.io.FileInputStream;
+import java.util.*;
 
 class Solution
 {
-    static int[] arr;
-    static int n;
-    static int max = 0;
     
-	public static void main(String args[]) throws Exception
-	{
-		//System.setIn(new FileInputStream("res/input.txt"));
-		Scanner sc = new Scanner(System.in);
-		int T;
-		T=sc.nextInt();
-		
-		for(int test_case = 1; test_case <= T; test_case++)
-		{
-			String s = sc.next();
-            n = sc.nextInt();
-            arr = new int[s.length()];
-            
-            for(int i = 0; i < s.length(); i++){
-            	arr[i] = s.charAt(i) - '0';
-            }
-            
-            if(arr.length < n) {
-            	n = arr.length;
-            }
-            
-            DFS(0,0); //시작 위치, 교환 횟수
-            
-            System.out.println("#" + test_case + " " + max);
-            
-            max = 0;
-		}
-	}
+    static int maxPrize;
+    static HashSet<String> visited;
     
-    static void DFS(int start, int depth){
-    	if(depth == n){
-        	int result = 0;
-            for(int i = 0; i < arr.length; i++){
-            	result += (Math.pow(10, i) * arr[arr.length - i - 1]);
-            }
-            max = Math.max(max, result);
+    private static void findMaxPrize(char[] numbers, int swaps){
+    	if(swaps == 0){
+        	int currentPrize = Integer.parseInt(new String(numbers));
+            maxPrize = Math.max(maxPrize, currentPrize);
             return;
         }
         
-        for(int i = 0; i < arr.length; i++){
-        	for(int j = i+1; j < arr.length; j++){
-                    swap(i, j);
-                    DFS(i, depth + 1);
-                    swap(i, j);
+        int len = numbers.length;
+        String currentState = new String(numbers) + swaps;
+        if(visited.contains(currentState)) return;
+        visited.add(currentState);
+        
+        for(int i = 0; i < len - 1; i++){
+        	for(int j = i +1; j < len; j++){
+            	swap(numbers, i, j);
+                findMaxPrize(numbers, swaps - 1);
+                swap(numbers, i, j);
             }
         }
+        return;
     }
     
-    static void swap(int i, int j){
-    	int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    private static void swap(char[] numbers, int i, int j){
+    	char temp = numbers[i];
+        numbers[i] = numbers[j];
+        numbers[j] = temp;
     }
+    
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+		int T;
+		T=sc.nextInt();
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+			String numStr = sc.next();
+            int swaps = sc.nextInt();
+            maxPrize = 0;
+            visited = new HashSet<>();
+            
+            char[] numbers = numStr.toCharArray();
+            findMaxPrize(numbers, swaps);
+            
+            System.out.printf("#%d %d\n", test_case, maxPrize);
+		}
+        sc.close();
+	}
 }
