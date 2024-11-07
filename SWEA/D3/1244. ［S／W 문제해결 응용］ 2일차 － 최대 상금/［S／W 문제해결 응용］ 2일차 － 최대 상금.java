@@ -9,9 +9,9 @@ class Solution
     static HashSet<String> visited;
     
     private static void findMaxPrize(char[] numbers, int swaps){
-    	if(swaps == 0){
-        	int currentPrize = Integer.parseInt(new String(numbers));
-            maxPrize = Math.max(maxPrize, currentPrize);
+        if(swaps == 0){
+    		int currentPrize = Integer.parseInt(new String(numbers));
+        	maxPrize = Math.max(maxPrize, currentPrize);
             return;
         }
         
@@ -20,10 +20,10 @@ class Solution
         if(visited.contains(currentState)) return;
         visited.add(currentState);
         
-        for(int i = 0; i < len - 1; i++){
-        	for(int j = i +1; j < len; j++){
+        for(int i = 0; i < len-1; i++){
+        	for(int j = i+1; j < len; j++){
             	swap(numbers, i, j);
-                findMaxPrize(numbers, swaps - 1);
+                findMaxPrize(numbers, swaps -1);
                 swap(numbers, i, j);
             }
         }
@@ -43,7 +43,7 @@ class Solution
 		T=sc.nextInt();
 		for(int test_case = 1; test_case <= T; test_case++)
 		{
-			String numStr = sc.next();
+            String numStr = sc.next();
             int swaps = sc.nextInt();
             maxPrize = 0;
             visited = new HashSet<>();
