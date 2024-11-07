@@ -68,21 +68,15 @@ class Solution
                 }
             }
             
-            // 각 행의 합 구하기
+            // 각 행과 열의 합 구하기
             for(int i = 0; i < 100; i++){
                 int sumOfRows = 0;
-            	for(int j = 0; j < 100; j++){
-                	sumOfRows += arr[j][i];
-                }
-                if(maxSumOfRows < sumOfRows) maxSumOfRows = sumOfRows;
-            }
-            
-            // 각 열의 합 구하기
-            for(int i = 0; i < 100; i++){
                 int sumOfCols = 0;
             	for(int j = 0; j < 100; j++){
-                	sumOfCols += arr[i][j];
+                	sumOfRows += arr[j][i];
+                    sumOfCols += arr[i][j];
                 }
+                if(maxSumOfRows < sumOfRows) maxSumOfRows = sumOfRows;
                 if(maxSumOfCols < sumOfCols) maxSumOfCols = sumOfCols;
             }
             
