@@ -1,3 +1,4 @@
+// 거리두기 확인하기
 class Solution {
     
     private static final int[] dy = {-1, 0, 0, 1};
