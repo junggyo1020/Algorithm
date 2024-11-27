@@ -1,29 +1,14 @@
-import java.util.*;
-
 class Solution {
     public int solution(int[][] sizes) {
         
-        int size = sizes.length;
+        int width = 0;
+        int height = 0;
         
-        // 명함의 가로, 세로 길이를 저장
-        int[] widths = new int[size];
-        int[] heights = new int[size];
-        
-        for(int i = 0; i < size; i++){
-            if(sizes[i][0] < sizes[i][1]){
-                widths[i] = sizes[i][1];
-                heights[i] = sizes[i][0];
-            } else {
-                widths[i] = sizes[i][0];
-                heights[i] = sizes[i][1];
-            }
+        for(int[] card : sizes){
+            width = Math.max(width, Math.max(card[0], card[1]));
+            height = Math.max(height, Math.min(card[0], card[1]));
         }
         
-        // 명함의 가로 길이와 세로 길이를 각각 정렬(오름차순)
-        Arrays.sort(widths);
-        Arrays.sort(heights);
-        
-        // 가로, 세로 길이의 곱 리턴
-        return (widths[sizes.length - 1] * heights[sizes.length - 1]);
+        return width * height;
     }
 }
