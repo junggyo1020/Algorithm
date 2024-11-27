@@ -1,25 +1,15 @@
 import java.util.*;
+
 class Solution {
     
-    // 문자열 나누기
-    private List<String> split(String s, int n){
-        List<String> tokens = new ArrayList<>();
-        for(int i = 0; i < s.length(); i += n){
-            int e = i + n;
-            if(e > s.length()) e = s.length();
-            tokens.add(s.substring(i, e));
-        }
-        return tokens;
-    }
-    
-    private int compress(String s, int n){
+    private int compress(String s, int length){
         StringBuilder sb = new StringBuilder();
-        String last = "";
+        // 개수 만큼 나뉘어진 token으로 비교해서 압축 진행하기
+        String last = ""; // 비교를 위한 이전 token 선언
         int count = 0;
-        for(String token : split(s, n)){
-            if(token.equals(last)){
-                count++;
-            } else {
+        for(String token : split(s, length)){
+            if(token.equals(last)) count++;
+            else {
                 if(count > 1) sb.append(count);
                 sb.append(last);
                 last = token;
@@ -28,15 +18,27 @@ class Solution {
         }
         if(count > 1) sb.append(count);
         sb.append(last);
+        
         return sb.length();
     }
     
+    private List<String> split(String s, int length){
+        List<String> tokens = new ArrayList<>();
+        for(int startIdx = 0; startIdx < s.length(); startIdx += length){
+            int endIdx = startIdx + length;
+            if(endIdx > s.length()) endIdx = s.length();
+            tokens.add(s.substring(startIdx, endIdx));
+        }
+        
+        return tokens;
+    }
+    
     public int solution(String s) {
-        // 길이 단이 별로 함수 돌려서 최소값 구하기
         int min = Integer.MAX_VALUE;
-        for(int i = 1; i <= s.length(); i++){
-            int compressed = compress(s,i);
-            if(compressed < min){
+        for(int length = 1; length <= s.length(); length++){
+            int compressed = compress(s, length);
+            // 최소 길이 구하는 공식
+            if(min > compressed){
                 min = compressed;
             }
         }
