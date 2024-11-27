@@ -1,15 +1,20 @@
 class Solution {
     public int[] solution(long n) {
-        // 정수 > String 변환
-        String s = Long.toString(n);
-        // String을 뒤집는다.
-        String sb = new StringBuilder(s).reverse().toString();
-        // String을 char 배열로 변경한다.
-        char[] ch = sb.toCharArray();
-        int[] result = new int[ch.length];
-        for(int i = 0; i < result.length; i++){
-            result[i] = ch[i] - '0';
+        StringBuilder sb = new StringBuilder();
+        String s = String.valueOf(n);
+        for(char c : s.toCharArray()){
+            sb.append(c);
         }
-        return result;
+        s = sb.reverse().toString();
+        
+        int[] arr = new int[s.length()];
+        
+        int index = 0;
+        for(char c : s.toCharArray()){
+            arr[index] = c - '0';
+            index++;
+        }
+        
+        return arr;
     }
 }
