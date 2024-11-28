@@ -1,24 +1,30 @@
 class Solution {
     
-    private int countZeros(String s){
-        int zeros = 0;
+    private static int frequency;
+    private static int zeroCnt;
+    
+    private void countZeros(String s){
         for(char c : s.toCharArray()){
-            if(c == '0') zeros++;
+            if(c == '0'){
+                zeroCnt++;
+            }
         }
-        return zeros;
+    }
+    
+    private String changeDigit(String s){
+        s = s.replace("0", "");
+        return Integer.toString(s.length(), 2);
     }
     
     public int[] solution(String s) {
-        int zero = 0;
-        int loop = 0;
+        frequency = 0;
+        zeroCnt = 0;
+        
         while(!s.equals("1")){
-            int zeros = countZeros(s);
-            loop += 1;
-            zero += zeros;
-            
-            int ones = s.length() - zeros;
-            s = Integer.toString(ones, 2);
+            countZeros(s);
+            frequency++;
+            s = changeDigit(s);
         }
-        return new int[] {loop, zero};
+        return new int[]{frequency, zeroCnt};
     }
 }
