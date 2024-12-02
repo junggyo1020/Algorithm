@@ -1,23 +1,21 @@
 import java.util.*;
 
 class Solution {
+    private static final String CHARS = "AEIOU";
     
-    private static final char[] CHARS = "AEIOU".toCharArray();
-    
-    private List<String> generate(String word){
-        List<String> words = new ArrayList<>();
+    private static void generated(String word, List<String> words){
         words.add(word);
         
-        if(word.length() == 5) return words;
+        if(word.length() == 5) return;
         
-        for(char c : CHARS){
-            words.addAll(generate(word + c));
+        for(char c : CHARS.toCharArray()){
+            generated(word + c, words);
         }
-        
-        return words;
     }
     
     public int solution(String word) {
-        return generate("").indexOf(word);
+        List<String> words = new ArrayList<>();
+        generated("", words);
+        return words.indexOf(word);
     }
 }
