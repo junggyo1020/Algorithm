@@ -14,7 +14,6 @@ class Solution {
         }
     }
     
-    //재귀 함수 호출
     private static Count count(int offsetX, int offsetY, int size, int[][] arr){
         int h = size / 2;
         for(int y = offsetY; y < offsetY + size; y++){
@@ -28,14 +27,14 @@ class Solution {
             }
         }
         if(arr[offsetY][offsetX] == 1){
-            return new Count(0,1);
+            return new Count(0, 1);
         } else {
-            return new Count(1,0);
+            return new Count(1, 0);
         }
     }
     
     public int[] solution(int[][] arr) {
-        Count count = count(0,0,arr.length,arr);
+        Count count = count(0, 0, arr.length, arr);
         return new int[]{count.zero, count.one};
     }
 }
