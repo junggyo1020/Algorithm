@@ -26,8 +26,9 @@ class Solution {
                 }
             }
         }
+        
         if(arr[offsetY][offsetX] == 1){
-            return new Count(0, 1);
+            return new Count(0,1);
         } else {
             return new Count(1, 0);
         }
