@@ -1,11 +1,13 @@
 import java.util.*;
+
 class Solution {
     
     private static void hanoi(int n, int from, int to, List<int[]> process){
-        if(n==1){
+        if(n == 1){
             process.add(new int[]{from, to});
             return;
         }
+        
         int empty = 6 - from - to;
         hanoi(n-1, from, empty, process);
         hanoi(1, from, to, process);
