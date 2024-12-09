@@ -14,7 +14,7 @@ class Solution {
             // 배열을 정렬한다
             Arrays.sort(sub);
             // 배열의 특정 인덱스값을 구한다
-            answer[i] = sub[k];
+            answer[i] = sub[k]; 
         }
         return answer;
     }
