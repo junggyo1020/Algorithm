@@ -1,42 +1,29 @@
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.io.FileInputStream;
 
-class Solution
-{
-	public static void main(String args[]) throws Exception
-	{
-		Scanner sc = new Scanner(System.in);
-		int T;
-		T=sc.nextInt();
+class Solution {
 
-		for(int test_case = 1; test_case <= T; test_case++)
-		{
-			int a = 0; int b = 0; int c = 0; int d = 0; int e = 0;
-            int n = sc.nextInt();
-            	while(n % 2 == 0){
-                	n /= 2;
-                    a++;
+    static final int[] arr = {2, 3, 5, 7, 11};
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        for (int t = 1; t <= T; t++) {
+            List<Integer> answer = new ArrayList<>();
+            int num = sc.nextInt();
+            for (int x : arr) {
+                int cnt = 0;
+                while (num % x == 0) {
+                    num /= x;
+                    cnt++;
                 }
-                while(n % 3 == 0){
-                	n /= 3;
-                    b++;
-                }
-                while(n % 5 == 0){
-                	n /= 5;
-                    c++;
-                }
-                while(n % 7 == 0){
-                	n /= 7;
-                    d++;
-                }
-                while(n % 11 == 0){
-                	n /= 11;
-                    e++;
-                }
-                
-				System.out.printf("#%d %d %d %d %d %d\n", test_case, a, b, c, d, e);
+                answer.add(cnt);
+            }
+            System.out.print("#" + t + " ");
+            for (int x : answer) {
+                System.out.print(x + " ");
+            }
+            System.out.println();
         }
-        sc.close();
-	}
+    }
 }
