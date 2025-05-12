@@ -1,48 +1,46 @@
 import java.util.Scanner;
 
-public class Main {
-
-    static int n;
-    static int[][] grid;
+class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        sc.nextLine();
-        grid = new int[n][n];
+        int n = sc.nextInt();
+        int[][] arr = new int[n][n];
 
+        //배열에 값 저장
         for (int i = 0; i < n; i++) {
-            String str = sc.nextLine();
+            String s = sc.next();
             for (int j = 0; j < n; j++) {
-                grid[i][j] = str.charAt(j) - '0';
+                arr[i][j] = s.charAt(j) - '0'; //정수형으로 변경
             }
         }
 
-        System.out.println(printQuadTree(0,0,n));
+        StringBuilder sb = new StringBuilder();
+        compress(arr, 0, 0, n, sb);
+        System.out.println(sb);
     }
 
-    public static String printQuadTree(int x, int y, int size){
-        if (isAllSame(x, y, size)) {
-            return Integer.toString(grid[y][x]);
+    private static void compress(int[][] arr, int y, int x, int size, StringBuilder sb) {
+        //구성이 모두 같은 단어인지 확인
+        if (isSame(arr, y, x, size)) {
+            sb.append(arr[y][x]);
+        } else {
+            // divide
+            int newSize = size / 2;
+
+            sb.append("(");
+            compress(arr, y, x, newSize, sb);
+            compress(arr, y, x + newSize, newSize, sb);
+            compress(arr, y + newSize, x, newSize, sb);
+            compress(arr, y + newSize, x + newSize, newSize, sb);
+            sb.append(")");
         }
-
-        StringBuilder result = new StringBuilder();
-        result.append("(");
-        result.append(printQuadTree(x, y, size / 2));
-        result.append(printQuadTree(x + size / 2, y, size / 2));
-        result.append(printQuadTree(x, y + size / 2, size / 2));
-        result.append(printQuadTree(x + size / 2, y + size / 2, size / 2));
-        result.append(")");
-        return result.toString();
     }
-
-    public static boolean isAllSame(int x, int y, int size){
-        int temp = grid[y][x];
-        for (int i = y; i < y+size; i++) {
-            for (int j = x; j < x+size; j++) {
-                if(grid[i][j] != temp){
-                    return false;
-                }
+    private static boolean isSame(int[][] arr, int y, int x, int size) {
+        int first = arr[y][x];
+        for (int i = y; i < y + size; i++) {
+            for (int j = x; j < x + size; j++) {
+                if(arr[i][j] != first) return false;
             }
         }
         return true;
