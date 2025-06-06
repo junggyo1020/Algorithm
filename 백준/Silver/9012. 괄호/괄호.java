@@ -3,40 +3,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Stack;
 
-public class Main {
+class Main {
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine());
-
-        for (int i = 0; i < t; i++) {
+        int n = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
             Stack<Character> st = new Stack<>();
-            String input = br.readLine();
-            boolean flag = true;
-
-            for (int j = 0; j < input.length(); j++) {
-                char ch = input.charAt(j);
-                // 입력 처리
-                if (ch == '(') {
-                    st.push(ch);
+            String s = br.readLine();
+            boolean isValid = true;
+            for (char x : s.toCharArray()) {
+                if (x == '(') {
+                    st.push(x);
                 } else {
-                    if(st.isEmpty()){
-                        flag = false;
+                    if (st.isEmpty()) {
+                        isValid = false;
                         break;
-                    } else {
-                        st.pop();
                     }
+                    st.pop();
                 }
             }
-            if(!st.isEmpty()){
-                flag = false;
-            }
-
-            if (flag) {
-                System.out.println("YES");
-            } else {
-                System.out.println("NO");
-            }
+            System.out.println(isValid && st.isEmpty()? "YES" : "NO");
         }
     }
 }
