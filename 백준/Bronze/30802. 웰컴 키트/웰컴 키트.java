@@ -21,8 +21,7 @@ class Main {
         //2. 티셔츠 묶음 개수 구하기
         int tCnt = 0;
         for (int x : arr) {
-            if(x % t == 0) tCnt += x/t;
-            else tCnt += (x/t + 1);
+            tCnt += (x + t - 1) / t;
         }
 
         //3. 펜 묶음 개수 구하기
