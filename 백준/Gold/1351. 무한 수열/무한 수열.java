@@ -1,30 +1,30 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 class Main {
 
-    static long n, p, q;
+    static long N, P, Q;
     static HashMap<Long, Long> hM;
 
-    private static long dp(long num) {
-        if(num == 0) return 1;
-        if(hM.containsKey(num)) return hM.get(num);
-        long value = dp(num/p) + dp(num/q);
-        hM.put(num, value);
-        return value;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Long.parseLong(st.nextToken());
+        P = Long.parseLong(st.nextToken());
+        Q = Long.parseLong(st.nextToken());
+        hM = new HashMap<>();
+
+        System.out.println(dp(N));
     }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextLong();
-        p = sc.nextLong();
-        q = sc.nextLong();
-
-        /*
-         * n값이 매우 크므로 배열 형식으로 저장 할 수 없음
-         * -> 해시맵을 이용해 필요한 값만 저장하는 방식 사용!
-         */
-        hM = new HashMap<>();
-        System.out.println(dp(n));
+    private static long dp(long n) {
+        if(n == 0) return 1;
+        if(hM.containsKey(n)) return hM.get(n);
+        long val = dp(n / P) + dp(n / Q);
+        hM.put(n, val);
+        return val;
     }
 }
