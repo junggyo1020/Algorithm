@@ -23,51 +23,24 @@ public class Solution {
 				}
 			}
 			
-			//회전배열 초기화
-			arr90 = new int[N][N];
-			arr180 = new int[N][N];
-			arr270 = new int[N][N];
-			
-			//90도 회전 배열 저장
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < N; j++) {
-					arr90[j][i] = board[N-i-1][j];
-				}
-			}
-			
-			//180도 회전 배열 저장
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < N; j++) {
-					arr180[i][j] = board[N-i-1][N-j-1];
-				}
-			}
-			
-			//270도 회전 배열 저장
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < N; j++) {
-					arr270[j][i] = board[i][N-j-1];
-				}
-			}
-			
 			//출력값 저장
 			StringBuilder sb = new StringBuilder();
 			sb.append("#").append(t).append('\n');
 			for(int i = 0; i < N; i++) {
 				for(int j = 0; j < N; j++){
-					sb.append(arr90[i][j]);
+					sb.append(board[N-j-1][i]);
 				}
 				sb.append(" ");
 				for(int j = 0; j < N; j++){
-					sb.append(arr180[i][j]);
+					sb.append(board[N-i-1][N-j-1]);
 				}
 				sb.append(" ");
 				for(int j = 0; j < N; j++){
-					sb.append(arr270[i][j]);
+					sb.append(board[j][N-i-1]);
 				}
 				sb.append('\n');
 			}
 			System.out.print(sb);
 		}
 	}
-
 }
