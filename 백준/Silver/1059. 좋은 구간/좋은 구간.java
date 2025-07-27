@@ -1,35 +1,48 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
-class Main {
+public class Main {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int L = sc.nextInt();
-        int[] arr = new int[L];
-        for (int i = 0; i < L; i++) {
-            arr[i] = sc.nextInt();
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int l = Integer.parseInt(br.readLine());
+        int[] s = new int[l];
+        st = new StringTokenizer(br.readLine());
+        for(int i = 0; i < l; i++){
+            s[i] = Integer.parseInt(st.nextToken());
         }
-        int n = sc.nextInt();
-        Arrays.sort(arr);
-        for (int x : arr) {
-            if (x == n) {
+        int n = Integer.parseInt(br.readLine());
+
+        Arrays.sort(s);
+
+        for(int num : s){
+            if(num == n){
                 System.out.println(0);
                 return;
             }
         }
 
-        int left = 0;
-        int right = 1001;
-        for (int x : arr) {
-            if(x < n) left = x;
-            else if(x > n){
-                right = x;
+        int s_small = 0;
+        int s_big = 1001;
+
+        for(int num : s){
+            if (num < n) {
+                s_small = num;
+            } else {
+                s_big = num;
                 break;
             }
         }
 
-        int result = (n - left) * (right - n) - 1;
-        System.out.println(result);
+        int left = n - s_small;
+        int right = s_big - n;
+
+        int ans = left * right - 1;
+        System.out.println(ans);
     }
 }
