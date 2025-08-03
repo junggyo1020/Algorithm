@@ -2,55 +2,48 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class Main {
-
-    static int[] arr = new int[26];
-    static int odd, num;
-    static String result;
-
-    public void solution(String str) {
-        //알파벳 개수 새기
-        for(int i = 0; i < str.length(); i++){
-            arr[str.charAt(i) - 'A']++;
-        }
-
-        //홀수 횟수의 알파벳 개수 세기
-        for(int i = 0; i < arr.length; i++){
-            if (arr[i] % 2 != 0) {
-                odd++;
-                num = i;
-            }
-            if (odd >= 2) {
-                System.out.println("I'm Sorry Hansoo");
-                return;
-            }
-        }
-
-        //팰린드롬 앞부분 채우기
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < arr.length; i++){
-            for(int j = 0; j < arr[i] / 2; j++){
-                sb.append((char)(i + 'A'));
-            }
-        }
-
-        result = sb.toString();
-
-        //가운데 문자 넣기
-        if (odd == 1) {
-            result += (char)(num + 'A');
-        }
-
-        //뒤에 문자열 뒤집어서 넣기
-        result += sb.reverse().toString();
-
-        System.out.println(result);
-    }
-
+public class Main {
     public static void main(String[] args) throws IOException {
-        Main T = new Main();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         String str = br.readLine();
-        T.solution(str);
+        
+        //1. 알파벳 개수 카운트
+        int[] cnt = new int[26];
+        for (char c : str.toCharArray()) {
+            cnt[c - 'A']++;
+        }
+
+        //2. 팰린드롬 생성 가능성 확인
+        int addCount = 0;
+        char centerChar = ' ';
+        for(int i = 0; i < 26; i++){
+            if(cnt[i] % 2 != 0){
+                addCount++;
+                centerChar = (char)('A' + i);
+            }
+        }
+        
+        //2-2. 불가능한 경우
+        if (addCount > 1 || (str.length() % 2 == 0 && addCount > 0)) {
+            System.out.println("I'm Sorry Hansoo");
+            return;
+        }
+        
+        //3. 팰린드롬 생성
+        for(int i = 0; i < 26; i++){
+            for(int j = 0; j < cnt[i] / 2; j++){
+                sb.append((char)('A'+i));
+            }
+        }
+
+        String firstStr = sb.toString(); //절반 저장
+        String secondStr = sb.reverse().toString();
+            
+        if(addCount == 1){
+            System.out.println(firstStr + centerChar + secondStr);
+        } else {
+            System.out.println(firstStr + secondStr);
+        }
     }
 }
