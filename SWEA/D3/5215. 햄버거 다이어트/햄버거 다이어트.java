@@ -1,56 +1,77 @@
 import java.util.*;
 import java.io.*;
 
-/*
-   사용하는 클래스명이 Solution 이어야 하므로, 가급적 Solution.java 를 사용할 것을 권장합니다.
-   이러한 상황에서도 동일하게 java Solution 명령으로 프로그램을 수행해볼 수 있습니다.
- */
-class Solution
-{
+class Solution {
     static int N, L, maxScore;
-	static int[] scores, cals;
-	static boolean[] isSelected;
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int T = Integer.parseInt(br.readLine());
-		//#1. 테스트케이스 만큼 반복
-		for(int t = 1; t <= T; t++) {
-			//#2. 기본 입력
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken());
-			L = Integer.parseInt(st.nextToken());
-			scores = new int[N];
-			cals = new int[N];
-			isSelected = new boolean[N+1];
-			for(int i = 0; i < N; i++) {
-				st = new StringTokenizer(br.readLine());
-				scores[i] = Integer.parseInt(st.nextToken());
-				cals[i] = Integer.parseInt(st.nextToken());
-			}
-			
-			//#3. 조합으로 모든 경우의 수 구하기
-			maxScore = Integer.MIN_VALUE; //가장 맛에 대한 점수가 높은 햄버거 점수
-			dfs(0, 0, 0);
-			
-			//#5. 결과 출력
-			System.out.printf("#%d %d\n", t, maxScore);
-		}
-	}
-	
-	private static void dfs(int cnt, int sum, int cal) {
-		//#4. 칼로리를 넘어서면 종료
-		if(cal > L) {
-			return;
-		} 
-		
-		if(cnt == N) {
-			maxScore = Math.max(maxScore, sum);
-			return;
-		}
-		
-		dfs(cnt+1, sum + scores[cnt], cal + cals[cnt]);
-		dfs(cnt+1, sum, cal);
+    static int[] scores, cals;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        int T = Integer.parseInt(br.readLine());
+        for (int t = 1; t <= T; t++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            L = Integer.parseInt(st.nextToken());
+            scores = new int[N];
+            cals = new int[N];
+            for (int i = 0; i < N; i++) {
+                st = new StringTokenizer(br.readLine());
+                scores[i] = Integer.parseInt(st.nextToken());
+                cals[i] = Integer.parseInt(st.nextToken());
+            }
+
+            maxScore = 0;
+            for (int k = 1; k <= N; k++) {
+                int[] p = new int[N];
+                for (int i = 0; i < k; i++) {
+                    p[N - 1 - i] = 1;
+                }
+
+                // 조합 생성
+                do {
+                    int currentScore = 0;
+                    int currentCal = 0;
+                    
+                    for (int i = 0; i < N; i++) {
+                        if (p[i] == 1) { // 선택된 재료라면
+                            currentScore += scores[i];
+                            currentCal += cals[i];
+                        }
+                    }
+
+                    if (currentCal <= L) {
+                        maxScore = Math.max(maxScore, currentScore);
+                    }
+                } while (np(p));
+            }
+            sb.append("#").append(t).append(" ").append(maxScore).append("\n");
+        }
+        System.out.print(sb);
+    }
+
+    private static boolean np(int[] numbers) {
+        int N = numbers.length;
+        int i = N - 1;
+        while (i > 0 && numbers[i - 1] >= numbers[i]) --i;
+        if (i == 0) return false;
+
+        int j = N - 1;
+        while (numbers[i - 1] >= numbers[j]) --j;
+
+        swap(numbers, i - 1, j);
+
+        int k = N - 1;
+        while (i < k) {
+            swap(numbers, i++, k--);
+        }
+        return true;
+    }
+
+    private static void swap(int[] numbers, int a, int b) {
+        int temp = numbers[a];
+        numbers[a] = numbers[b];
+        numbers[b] = temp;
     }
 }
