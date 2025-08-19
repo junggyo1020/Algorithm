@@ -1,24 +1,37 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-class Main {
+public class Main {
+	
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
+	static int N, M;
+	static int[] arr, pSum;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = new int[N];
+		pSum = new int[N+1];
+		st = new StringTokenizer(br.readLine());
+		
+		//pSum[i] = 0부터 arr[i]까지의 합
+		for(int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+			pSum[i+1] = pSum[i] + arr[i];
+		}
+		
+		M = Integer.parseInt(br.readLine());
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+			int answer = pSum[y] - pSum[x-1];
+			sb.append(answer).append("\n");
+		}
+		System.out.println(sb);
+	}
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        int[] pSum = new int[n+1];
-        for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
-        }
-        for (int i = 0; i < n; i++) {
-            pSum[i+1] = pSum[i] + arr[i];
-        }
-        int m = sc.nextInt();
-        for (int i = 0; i < m; i++) {
-            int lt = sc.nextInt();
-            int rt = sc.nextInt();
-            int result = pSum[rt] - pSum[lt-1];
-            System.out.println(result);
-        }
-    }
 }
