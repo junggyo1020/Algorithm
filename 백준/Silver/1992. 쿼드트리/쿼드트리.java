@@ -1,48 +1,47 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-class Main {
+public class Main {
+	static int N;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		N = Integer.parseInt(br.readLine());
+		int[][] board = new int[N][N];
+		for(int i = 0; i < N; i++){
+			String str = br.readLine();
+			for(int j = 0; j < N; j++){
+				board[i][j] = str.charAt(j) - '0';
+			}
+		}
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[][] arr = new int[n][n];
+		dfs(board, 0, 0, N, sb);
 
-        //배열에 값 저장
-        for (int i = 0; i < n; i++) {
-            String s = sc.next();
-            for (int j = 0; j < n; j++) {
-                arr[i][j] = s.charAt(j) - '0'; //정수형으로 변경
-            }
-        }
+		System.out.println(sb);
+	}
 
-        StringBuilder sb = new StringBuilder();
-        compress(arr, 0, 0, n, sb);
-        System.out.println(sb);
-    }
+	private static void dfs(int[][] board, int y, int x, int size, StringBuilder sb){
+		if(isSame(board, y, x, size)){
+			sb.append(board[y][x]);
+			return;
+		} else {
+			sb.append("(");
+			dfs(board, y, x, size/2, sb);
+			dfs(board, y, x + size/2, size/2, sb);
+			dfs(board, y + size/2, x, size/2, sb);
+			dfs(board, y+size/2, x+size/2, size/2, sb);
+			sb.append(")");
+		}
+	}
 
-    private static void compress(int[][] arr, int y, int x, int size, StringBuilder sb) {
-        //구성이 모두 같은 단어인지 확인
-        if (isSame(arr, y, x, size)) {
-            sb.append(arr[y][x]);
-        } else {
-            // divide
-            int newSize = size / 2;
-
-            sb.append("(");
-            compress(arr, y, x, newSize, sb);
-            compress(arr, y, x + newSize, newSize, sb);
-            compress(arr, y + newSize, x, newSize, sb);
-            compress(arr, y + newSize, x + newSize, newSize, sb);
-            sb.append(")");
-        }
-    }
-    private static boolean isSame(int[][] arr, int y, int x, int size) {
-        int first = arr[y][x];
-        for (int i = y; i < y + size; i++) {
-            for (int j = x; j < x + size; j++) {
-                if(arr[i][j] != first) return false;
-            }
-        }
-        return true;
-    }
+	private static boolean isSame(int[][] board, int y, int x, int size){
+		int cur = board[y][x];
+		for(int i = y; i < y + size; i++){
+			for(int j = x; j < x + size; j++){
+				if(board[i][j] != cur) return false;
+			}
+		}
+		return true;
+	}
 }
