@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 /**
  * 벽돌깨기
- * 성능:
+ * 성능: 메모리 97,532kb / 실행시간 248ms / 코드길이 3,613
  * @author 서울_7반_정정교
  *
  */
@@ -79,6 +79,11 @@ public class Solution {
     	}
     }
     
+    /**
+     * 남아있는 벽돌 개수를 세는 함수
+     * @param map 현재 상태배열
+     * @return 남아있는 벽돌의 개수
+     */
     private static int countBricks(int[][] map) {
     	int cnt = 0;
     	for(int r = 0; r < H; r++) {
@@ -89,6 +94,11 @@ public class Solution {
     	return cnt;
     }
     
+    /**
+     * 2차원 배열을 깊은 복사하는 함수
+     * @param oMap 복사해야할 배열
+     * @return 깊은 복사한 배열
+     */
     private static int[][] copy(int[][] oMap){
     	int[][] nMap = new int[H][W];
     	for(int h = 0; h < H; h++) {
@@ -97,6 +107,12 @@ public class Solution {
     	return nMap;
     }
     
+    /**
+     * BFS를 통해 범위만큼의 벽돌을 부수는 함수
+     * @param map 현재 상태 배열
+     * @param r 부술 벽돌의 행 번호
+     * @param c 부술 벽돌의 열 번호
+     */
     private static void explode(int[][] map, int r, int c) {
     	Queue<int[]> q = new ArrayDeque<>();
     	if(map[r][c] > 0) {
@@ -125,6 +141,10 @@ public class Solution {
     	}
     }
     
+    /**
+     * 벽돌을 부순 이후 재정렬하기 위한 함수
+     * @param map 현재 상태 배열
+     */
     private static void reArrange(int[][] map) {
     	for(int c = 0; c < W; c++) {
     		Stack<Integer> st = new Stack<>();
