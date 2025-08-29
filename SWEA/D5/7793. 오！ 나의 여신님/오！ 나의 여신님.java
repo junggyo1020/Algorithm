@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 /**
  * 오 나의 여신님
- * 성능: 
+ * 성능: 메모리 27,520kb / 실행시간 95ms / 코드길이 2,928
  * @author 서울_7반_정정교
  *
  */
@@ -20,7 +20,6 @@ public class Solution {
 	static int N, M, sy, sx, ey, ex;
 	static char[][] map;
 	static boolean[][] sVisited; //수연 방문 체크 배열
-	static boolean[][] dVisited; //악마 방문 체크 배열
 	
 	static final int[] dy = {-1, 1, 0, 0};
 	static final int[] dx = {0, 0, -1, 1};
@@ -43,7 +42,6 @@ public class Solution {
 			//#1. 지도 정보 입력
 			map = new char[N][M];
 			sVisited = new boolean[N][M];
-			dVisited = new boolean[N][M];
 			Queue<Point> dq = new ArrayDeque<>();
 			for(int i = 0; i < N; i++) {
 				String str = br.readLine();
@@ -56,7 +54,6 @@ public class Solution {
 					}
 					if(ch == '*') {
 						dq.offer(new Point(i, j));
-						dVisited[i][j] = true;
 					}
 				}
 			}
