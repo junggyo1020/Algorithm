@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 /**
  * 벌꿀채취
- * 성능: 
+ * 성능: 메모리 25,472kb 실행시간 83ms 코드길이 3,063
  * @author 서울_7반_정정교
  * 
  * 1. (1단계) 각 가능한 M개의 벌통 조합에서 얻을 수 있는 최대 이익을 미리 계산한다.
@@ -20,82 +20,96 @@ import java.util.StringTokenizer;
  */
 public class Solution {
 
-	static StringTokenizer st;
-	static StringBuilder sb = new StringBuilder();
-	
 	static int N, M, C;
-	static int[][] map;
+	static int[][] arr;
 	static int[][] maxProfitMap;
-	static int maxProfitPerWorker;
+	static int maxProfitPerOne;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		StringBuilder sb = new StringBuilder();
+		
 		int T = Integer.parseInt(br.readLine());
 		for(int t = 1; t <= T; t++) {
 			st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken()); //벌통의 크기 <= 10
-			M = Integer.parseInt(st.nextToken()); //벌통의 개수
-			C = Integer.parseInt(st.nextToken()); //벌통 당 채취할 수 있는 꿀의 최대 양
-			maxProfitPerWorker = Integer.MIN_VALUE;
-			maxProfitMap = new int[N][N-M+1];
-			//초기 벌통 정보 입력
-			map = new int[N][N];
+			N = Integer.parseInt(st.nextToken());
+			M = Integer.parseInt(st.nextToken());
+			C = Integer.parseInt(st.nextToken());
+			
+			//1. 벌통정보 입력
+			arr = new int[N][N];
 			for(int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
 				for(int j = 0; j < N; j++) {
-					map[i][j] = Integer.parseInt(st.nextToken());
+					arr[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
 			
-			for(int i = 0; i < N; i++) {
-				for(int j = 0; j < N-M+1; j++) {
-					calculateMaxProfit(i, j);
-				}
-			}
-			
+			//2. 모든 좌표마다 최대 이익 구하기
 			int totalMaxProfit = 0;
+			maxProfitMap = new int[N][N-M+1];
 			for(int i = 0; i < N; i++) {
 				for(int j = 0; j < N-M+1; j++) {
-					//같은 행에서 선택하는 경우
-					for(int j2 = j+M; j2 < N-M+1; j2++) {
-						totalMaxProfit = Math.max(totalMaxProfit, maxProfitMap[i][j] + maxProfitMap[i][j2]);
+					calculateProfit(i, j);	
+				}
+			}
+			
+			//3. 두명의 일꾼으로 전체 이익 갱신하기
+			for(int i1 = 0; i1 < N; i1++) {
+				for(int j1 = 0; j1 < N-M+1; j1++) {
+					//같은 행에 존재하는 경우
+					for(int j2 = j1+M; j2 < N-M+1; j2++) {
+						totalMaxProfit = Math.max(totalMaxProfit, maxProfitMap[i1][j1] + maxProfitMap[i1][j2]);
 					}
 					
-					//다른 행에서 선택하는 경우
-					for(int i2 = i+1; i2 < N; i2++) {
+					//다른 행에 존재하는 경우
+					for(int i2 = i1+1; i2 < N; i2++) {
 						for(int j2 = 0; j2 < N-M+1; j2++) {
-							totalMaxProfit = Math.max(totalMaxProfit, maxProfitMap[i][j] + maxProfitMap[i2][j2]);
+							totalMaxProfit = Math.max(totalMaxProfit, maxProfitMap[i1][j1] + maxProfitMap[i2][j2]);
 						}
 					}
 				}
 			}
 			
 			sb.append("#").append(t).append(" ").append(totalMaxProfit).append("\n");
-		} //end TestCase
-		System.out.println(sb);
-	} //end Main
-	
-	private static void calculateMaxProfit(int r, int c) {
-		int[] honey = new int[M];
-		for(int i = 0; i < M; i++) {
-			honey[i] = map[r][c+i];
 		}
-		
-		maxProfitPerWorker = 0;
-		findSubsetProfit(0, 0, 0, honey);
-		maxProfitMap[r][c] = maxProfitPerWorker;
+		System.out.println(sb);
 	}
 	
-	private static void findSubsetProfit(int index, int honeySum, int profitSum, int[] honey) {
-		if(honeySum > C) return;
-		
-		maxProfitPerWorker = Math.max(maxProfitPerWorker, profitSum);
-		
-		if(index == M) {
-			return;
+	/**
+	 * 시작 좌표에서 구할 수 있는 최대 수익 저장
+	 * @param r
+	 * @param c
+	 */
+	private static void calculateProfit(int r, int c) {
+		//범위 내 모든 꿀 정보 저장
+		int[] honey = new int[M];
+		for(int i = 0; i < M; i++) {
+			honey[i] = arr[r][c+i];
 		}
 		
-		findSubsetProfit(index+1, honeySum + honey[index], profitSum + honey[index]*honey[index], honey);
-		findSubsetProfit(index+1, honeySum, profitSum, honey);
+		//최대 수익 정보 구하기
+		maxProfitPerOne = 0;
+		findMaxProfit(0, 0, 0, honey);
+		maxProfitMap[r][c] = maxProfitPerOne;
+	}
+	
+	/**
+	 * 시작좌표에서 M범위까지 구할 수 있는 모든 경우의 수를 통해 최대 이익 구하기
+	 * @param index
+	 * @param honeySum
+	 * @param profitSum
+	 * @param honey
+	 */
+	private static void findMaxProfit(int index, int honeySum, int profitSum, int[] honey) {
+		if(honeySum > C) return;
+		
+		maxProfitPerOne = Math.max(maxProfitPerOne, profitSum);
+		
+		if(index == M) return;
+		
+		findMaxProfit(index+1, honeySum+honey[index], profitSum+(honey[index]*honey[index]), honey);
+		findMaxProfit(index+1, honeySum, profitSum, honey);
 	}
 }
