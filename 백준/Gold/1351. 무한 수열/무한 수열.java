@@ -4,27 +4,28 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-class Main {
+public class Main {
 
-    static long N, P, Q;
-    static HashMap<Long, Long> hM;
+	static long N;
+	static int P, Q;
+	static HashMap<Long, Long> hm = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Long.parseLong(st.nextToken());
-        P = Long.parseLong(st.nextToken());
-        Q = Long.parseLong(st.nextToken());
-        hM = new HashMap<>();
+	private static long dp(long n){
+		if(hm.containsKey(n)) return hm.get(n);
+		if(n == 0L) {
+			return 1L;
+		}
 
-        System.out.println(dp(N));
-    }
-
-    private static long dp(long n) {
-        if(n == 0) return 1;
-        if(hM.containsKey(n)) return hM.get(n);
-        long val = dp(n / P) + dp(n / Q);
-        hM.put(n, val);
-        return val;
-    }
+		long result = dp(n/P) + dp(n/Q);
+		hm.put(n, result);
+		return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Long.parseLong(st.nextToken());
+		P = Integer.parseInt(st.nextToken());
+		Q = Integer.parseInt(st.nextToken());
+		System.out.println(dp(N));
+	}
 }
