@@ -1,38 +1,50 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 
-class Main {
+public class Main {
+	/**
+	 * dp[i] : i를 1로 만드는 횟수의 최솟값 구하기
+	 * @param args
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int N = Integer.parseInt(br.readLine());
+		int[] dp = new int[N+1];
+		int[] prev = new int[N+1];
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] dp = new int[n+1]; // 연산의 최소 횟수 저장
-        int[] prev = new int[n+1]; // 이전에 방문한 숫자 기록
+		dp[1] = 0;
+		prev[1] = -1;
 
-        for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i-1] + 1;
-            prev[i] = i-1;
+		for(int i = 2; i <= N; i++){
+			dp[i] = dp[i-1] + 1;
+			prev[i] = i-1;
 
-            if (i % 3 == 0 && dp[i] > dp[i/3] + 1) {
-                dp[i] = dp[i/3] + 1;
-                prev[i] = i / 3;
-            }
-            if (i % 2 == 0 && dp[i] > dp[i/2] + 1) {
-                dp[i] = dp[i/2] + 1;
-                prev[i] = i / 2;
-            }
-        }
+			if(i%3==0 && dp[i] > (dp[i/3]+1)){
+				dp[i] = Math.min(dp[i], dp[i/3]+1);
+				prev[i] = i/3;
+			}
 
-        System.out.println(dp[n]);
+			if(i%2==0 && dp[i] > (dp[i/2]+1)){
+				dp[i] = Math.min(dp[i], dp[i / 2] + 1);
+				prev[i] = i/2;
+			}
+		}
 
-        //걍로 저장하기
-        ArrayList<Integer> path = new ArrayList<>();
-        for (int i = n; i > 0; i = prev[i]) {
-            path.add(i);
-        }
+		ArrayDeque<Integer> q = new ArrayDeque<>();
+		for(int i = N; i != -1; i = prev[i]){
+			q.offer(i);
+		}
 
-        for (int x : path) {
-            System.out.print(x + " ");
-        }
-    }
+		sb.append(dp[N]).append("\n");
+		
+		while (!q.isEmpty()) {
+			sb.append(q.poll()).append(" ");
+		}
+		
+		System.out.println(sb);
+	}
 }
