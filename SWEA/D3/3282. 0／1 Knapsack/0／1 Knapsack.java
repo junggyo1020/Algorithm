@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 // 0/1 배낭 문제(Knapsack Problem)
-// 성능: 32384kb, 106ms
+// 성능: 26,880 kb, 102 ms
 public class Solution {
 
 	static int N, K; // N: 물건의 개수, K: 배낭의 최대 용량
