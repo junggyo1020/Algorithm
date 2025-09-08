@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 44696 KB, 시간: 416 ms
+메모리: 37684 KB, 시간: 272 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2025년 9월 5일 14:32:23
+2025년 9월 9일 08:44:58
 
 ### 문제 설명
 
@@ -25,7 +25,7 @@
 	<li>그 컵에 공이 숨겨져 있다면 참가자가, 그렇지 않다면 진행자가 이긴다.</li>
 </ol>
 
-<p style="text-align: center;"><img alt="" src="" style="height: 225px; width: 300px;"></p>
+<p style="text-align: center;"><img alt="" src="https://upload.acmicpc.net/3a3fbee0-2322-4556-a978-1732f9da439f/-/preview/" style="height: 225px; width: 300px;"></p>
 
 <p>수혁이는 Shell Game을 잘하고 싶다. 하지만, 일우가 진행자라면 무슨 수를 써도 이길 수 없어 수혁이는 일우의 사기도박을 의심하고 있다. 현재 우리는 수혁과 일우가 진행한 Shell Game의 모든 기록을 입수했다. 이를 바탕으로, 일우가 사기도박을 하지 않았다면 공이 몇 번째 컵에 있는지 알려주는 프로그램을 작성하자.</p>
 
