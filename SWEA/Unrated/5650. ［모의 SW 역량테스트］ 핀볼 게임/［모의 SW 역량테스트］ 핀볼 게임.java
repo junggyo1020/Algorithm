@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 /**
  * SW Expert Academy 5650. [모의 SW 역량테스트] 핀볼 게임
- * 메모리:  KB, 시간:  ms
+ * 메모리: 121,844 KB, 시간: 1,015 ms
  *
  * @author 서울_7반_정정교
  */
