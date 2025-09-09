@@ -5,6 +5,12 @@ import java.util.StringTokenizer;
 
 /**
  * 최적화 합시다. (DP + 이분탐색 ver.) -> O(NlogN)
+ *
+ * 차이 비교
+ * O(N^2) 방식 : 32,244 KB / 117 MS
+ * O(NlogN) 방식 : 28,032 KB / 95 MS
+ * 
+ * N이 커질 수록 성능 차이는 매우 커질 것.
  */
 public class Solution {
 
@@ -31,7 +37,7 @@ public class Solution {
 			for (int i = 0; i < N; i++) {
 				int pos = binarySearch(arr[i], 0, length - 1, length);
 				dp[pos] = arr[i];
-				
+
 				//모든 현재 원소가 기존 LIS의 모든 원소보다 큰 경우 맨뒤에 추가한다.
 				if(pos == length) {
 					length++;
