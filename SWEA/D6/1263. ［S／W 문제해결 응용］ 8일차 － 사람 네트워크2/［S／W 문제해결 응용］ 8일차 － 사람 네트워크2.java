@@ -9,13 +9,13 @@ public class Solution {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(100000);
 		int T = Integer.parseInt(br.readLine());
 
 		for(int t = 1; t <= T; t++){
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int N = Integer.parseInt(st.nextToken()); // 사람의 수
-			int[][] dis = new int[N][N]; // 거리 정보
+			int[][] dis = new int[1000][1000]; // 거리 정보
 
 			// 인접 행렬 입력 & 초기 거리 설정
 			for(int i = 0; i < N; i++){
@@ -32,10 +32,15 @@ public class Solution {
 
 			// 플로이드-워셜
 			for(int k = 0; k < N; k++){ 		     // 경
+				int[] disK = dis[k];
 				for(int i = 0; i < N; i++){          // 출
+					if (i == k || dis[i][k] == INF) continue;
+					int[] disI = dis[i];
+					int disIK = dis[i][k];
 					for(int j = 0; j < N; j++){      // 도
-						if (dis[i][j] > dis[i][k] + dis[k][j]) {
-							dis[i][j] = dis[i][k] + dis[k][j];
+						int newDist = disIK + disK[j];
+						if (newDist < disI[j]) {
+							disI[j] = newDist;
 						}
 					}
 				}
@@ -44,8 +49,13 @@ public class Solution {
 			int minCC = Integer.MAX_VALUE;
 			for(int i = 0; i < N; i++){
 				int sum = 0;
+				int[] disI = dis[i];
 				for(int j = 0; j < N; j++){
-					sum += dis[i][j];
+					sum += disI[j];
+					if(sum >= minCC){
+						sum = INF;
+						break;
+					}
 				}
 				if(minCC > sum){
 					minCC = sum;
