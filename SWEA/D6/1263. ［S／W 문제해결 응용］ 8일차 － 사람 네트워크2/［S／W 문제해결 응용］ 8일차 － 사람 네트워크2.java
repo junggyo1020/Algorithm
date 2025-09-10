@@ -25,11 +25,7 @@ public class Solution {
 						dis[i][j] = 0;  // 자기 자신으로의 거리는 0
 					} else {
 						// 연결되어 있으면 거리 1, 아니면 INF로 설정
-						if(num == 1){
-							dis[i][j] = 1;
-						} else {
-							dis[i][j] = INF;
-						}
+						dis[i][j] = num == 1 ? 1 : INF;
 					}
 				}
 			}
