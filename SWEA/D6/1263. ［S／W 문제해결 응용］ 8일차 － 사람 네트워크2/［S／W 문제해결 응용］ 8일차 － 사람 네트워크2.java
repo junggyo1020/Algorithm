@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution {
-	
+
 	static final int INF = 1_000_000_000;
 
 	public static void main(String[] args) throws IOException {
@@ -36,7 +36,10 @@ public class Solution {
 					for(int j = 0; j < N; j++){      // 도
 						// i->k, k->j 경로가 모두 존재하는 경우
 						if (dis[i][k] != INF && dis[k][j] != INF) {
-							dis[i][j] = Math.min(dis[i][j], dis[i][k] + dis[k][j]);
+							int newDist = dis[i][k] + dis[k][j];
+							if (newDist < dis[i][j]) {
+								dis[i][j] = newDist;
+							}
 						}
 					}
 				}
