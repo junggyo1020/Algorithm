@@ -4,51 +4,56 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution {
-
-	static final int INF = Integer.MAX_VALUE;
+	
+	static final int INF = 1_000_000_000;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		int T = Integer.parseInt(br.readLine());
+
 		for(int t = 1; t <= T; t++){
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			int N = Integer.parseInt(st.nextToken());
-			int[][] dis = new int[N+1][N+1];
-			for(int i = 1; i <= N; i++){
-				for(int j = 1; j <= N; j++){
+			int N = Integer.parseInt(st.nextToken()); // 사람의 수
+			int[][] dis = new int[N][N]; // 거리 정보
+
+			// 인접 행렬 입력 & 초기 거리 설정
+			for(int i = 0; i < N; i++){
+				for(int j = 0; j < N; j++){
 					int num = Integer.parseInt(st.nextToken());
-					if(i==j) dis[i][j] = 0;
-					else {
+					if(i == j) {
+						dis[i][j] = 0;  // 자기 자신으로의 거리는 0
+					} else {
+						// 연결되어 있으면 거리 1, 아니면 INF로 설정
 						dis[i][j] = num == 1 ? 1 : INF;
 					}
 				}
 			}
 
-			for(int k = 1; k <= N; k++){
-				for(int i = 1; i <= N; i++){
-					if(dis[i][k] == INF) continue; // i -> k로 가지 못하는 경우
-					for(int j = 1; j <= N; j++){
-						if(dis[k][j] == INF) continue; // j -> k로 가지 못하는 경우
-						long sum = (long)dis[i][k] + dis[k][j];
-						if(sum < dis[i][j]){
-							dis[i][j] = (int)sum;
+			// 플로이드-워셜
+			for(int k = 0; k < N; k++){ 		     // 경
+				for(int i = 0; i < N; i++){          // 출
+					for(int j = 0; j < N; j++){      // 도
+						// i->k, k->j 경로가 모두 존재하는 경우
+						if (dis[i][k] != INF && dis[k][j] != INF) {
+							dis[i][j] = Math.min(dis[i][j], dis[i][k] + dis[k][j]);
 						}
 					}
 				}
 			}
 
-			int minSum = Integer.MAX_VALUE;
-			for(int i = 1; i <= N; i++){
+			int minCC = Integer.MAX_VALUE;
+			for(int i = 0; i < N; i++){
 				int sum = 0;
-				for(int j = 1; j <= N; j++){
+				for(int j = 0; j < N; j++){
 					sum += dis[i][j];
 				}
-				minSum = Math.min(minSum, sum);
+				minCC = Math.min(minCC, sum);
 			}
 
-			sb.append("#").append(t).append(" ").append(minSum).append("\n");
+			sb.append("#").append(t).append(" ").append(minCC).append("\n");
 		}
-		System.out.println(sb);
+
+		System.out.print(sb);
 	}
 }
