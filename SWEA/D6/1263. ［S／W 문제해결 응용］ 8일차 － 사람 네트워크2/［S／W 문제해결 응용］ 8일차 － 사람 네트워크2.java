@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Solution {
-	
+
 	static final int INF = 1_000_000_000;
 
 	public static void main(String[] args) throws IOException {
@@ -47,7 +47,9 @@ public class Solution {
 				for(int j = 0; j < N; j++){
 					sum += dis[i][j];
 				}
-				minCC = Math.min(minCC, sum);
+				if(minCC > sum){
+					minCC = sum;
+				}
 			}
 
 			sb.append("#").append(t).append(" ").append(minCC).append("\n");
