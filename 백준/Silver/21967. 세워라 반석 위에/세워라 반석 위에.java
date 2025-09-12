@@ -16,6 +16,9 @@ import java.util.TreeMap;
  * - 차가 2이하라면, 해당 길이를 갱신한다.
  * - 결과 출력하기
  *  gogo
+ *
+ *  결론: 계속해서 최대 최소값을 갱신해 주어야 하기 때문에, 양쪽 끝을 모두 사용할 수 있는
+ *  TreeMap을 사용하는 것이 이 문제의 핵심인 듯 하다.
  */
 public class Main {
 
@@ -28,7 +31,7 @@ public class Main {
 		N = Integer.parseInt(br.readLine());
 		stone = new int[N];
 		tM = new TreeMap<>();
-		
+
 		//1. 반석 정보 입력
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
@@ -58,16 +61,16 @@ public class Main {
 
 		for (int e = 0; e < N; e++) {
 			tM.put(stone[e], tM.getOrDefault(stone[e], 0) + 1);
-			
+
 			//최대값 - 최소값이 <= 2일 때까지 범위 줄이기
 			while (tM.lastKey() - tM.firstKey() > 2) {
 				tM.put(stone[s], tM.get(stone[s]) - 1); //가장 작은 수 줄이기
 				if (tM.get(stone[s]) == 0) {
 					tM.remove(stone[s]);
 				}
-                s++;
+				s++;
 			}
-			
+
 			res = Math.max(res,  e - s + 1);
 		}
 
