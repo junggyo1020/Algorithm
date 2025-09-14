@@ -8,7 +8,6 @@ public class Solution {
 	static int N;
 	static int[] arr;
 	static int[] dp;
-	static int maxLen;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,20 +21,32 @@ public class Solution {
 				arr[i] = Integer.parseInt(st.nextToken());
 			}
 			
+			int length = 0;
 			for(int i = 0; i < N; i++) {
-				dp[i] = 1;
-				for(int j = 0; j < i; j++) {
-					if(arr[i] > arr[j] && dp[i] < dp[j] + 1) {
-						dp[i] = dp[j] + 1;
-					}
+				int pos = binarySearch(arr[i], 0, length - 1, length);
+				dp[pos] = arr[i];
+				
+				if(pos == length) {
+					length++;
 				}
 			}
 			
-			int maxLen = 0;
-			for(int i = 0; i < N; i++) {
-				maxLen = Math.max(maxLen, dp[i]);
-			}
-			System.out.println("#" + t + " " + maxLen);
+			System.out.println("#" + t + " " + length);
 		}
 	}// end Main
+	
+	private static int binarySearch(long target, int lt, int rt, int size) {
+		int res = size;
+		while(lt <= rt) {
+			int mid = lt + (rt - lt) / 2;
+			if(dp[mid] >= target) {
+				rt = mid - 1;
+				res = mid;
+			} else {
+				lt = mid + 1;
+			}
+		}
+		
+		return res;
+	}
 }
