@@ -2,42 +2,36 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-class Main {
+public class Main {
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-        Queue<Integer> q = new ArrayDeque<>();
-        List<Integer> answer = new LinkedList<>();
-
-        for (int i = 1; i <= n; i++) {
-            q.offer(i);
-        }
-
-        while (!q.isEmpty()) {
-            for (int i = 1; i < k; i++) {
-                q.offer(q.poll());
-            }
-            answer.add(q.poll());
-        }
-
-        System.out.print("<");
-        boolean flag = false;
-        for (int x : answer) {
-            if (!flag) {
-                System.out.print(x);
-                flag = true;
-            } else {
-                System.out.print(", " + x);
-            }
-        }
-        System.out.print(">");
-    }
+	static int N, K;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		
+		ArrayDeque<Integer> dq = new ArrayDeque<>();
+		for(int i = 1; i <= N; i++) {
+			dq.offer(i);
+		}
+		
+		ArrayList<Integer> answer = new ArrayList<>();
+		while(dq.size()>=1) {
+			for(int i = 0; i < K-1; i++) {
+				dq.offer(dq.poll());
+			}
+			answer.add(dq.poll());
+		}
+		
+		System.out.print("<"+answer.get(0));
+		for(int i = 1; i < answer.size(); i++) {
+			System.out.print(", " +answer.get(i));
+		}
+		System.out.print(">");
+	}
 }
