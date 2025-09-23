@@ -28,10 +28,12 @@ public class Main {
 			answer.add(dq.poll());
 		}
 		
-		System.out.print("<"+answer.get(0));
+        StringBuilder sb = new StringBuilder();
+        sb.append("<").append(answer.get(0));
 		for(int i = 1; i < answer.size(); i++) {
-			System.out.print(", " +answer.get(i));
+			sb.append(", ").append(answer.get(i));
 		}
-		System.out.print(">");
+		sb.append(">");
+        System.out.println(sb);
 	}
 }
