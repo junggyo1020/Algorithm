@@ -1,85 +1,87 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+import java.util.Scanner;
 
-class Main {
+public class Main {
 
-    static int N, K;
-    static char[] initArr, sortedArr;
+	static int N, K;
+	static String targetStr;
 
-    //상태 횟수 구하기
-    static class State {
-        String value;
-        int cnt;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		N = sc.nextInt();
+		K = sc.nextInt();
 
-        State(String value, int cnt) {
-            this.value = value;
-            this.cnt = cnt;
-        }
-    }
+		int[] initArr = new int[N];
+		int[] targetArr = new int[N];
 
-    public static void main(String[] args) throws IOException {
-        //1. 입력부
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        initArr = new char[N];
-        sortedArr = new char[N];
+		for (int i = 0; i < N; i++) {
+			initArr[i] = sc.nextInt();
+			targetArr[i] = i + 1;
+		}
 
-        //2. initArr과 sortedArr 초기화 하기
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            char tmp = st.nextToken().charAt(0);
-            initArr[i] = tmp;
-            sortedArr[i] = (char)((i + 1) + '0');
-        }
+		targetStr = arrToStr(targetArr);
+		System.out.println(bfs(initArr));
+	}
 
-        //3. 뒤집기 위해 String 형태로 변환
-        String initState = new String(initArr);
-        String targetState = new String(sortedArr);
+	public static int bfs(int[] initArr) {
+		Queue<int[]> q = new LinkedList<>();
+		Map<String, Integer> dist = new HashMap<>();
 
-        //4. 최소 연산횟수 구하기
-        System.out.println(bfs(initState, targetState, N, K));
-    }
+		q.offer(initArr);
+		dist.put(arrToStr(initArr), 0);
 
-    private static int bfs(String start, String target, int n, int k) {
-        if(start.equals(target)) return 0;
+		while (!q.isEmpty()) {
+			int[] currArr = q.poll();
+			String currStr = arrToStr(currArr);
+			int currCost = dist.get(currStr);
 
-        Queue<State> q = new LinkedList<>();
-        Set<String> visited = new HashSet<>();
+			if (currStr.equals(targetStr)) {
+				return currCost;
+			}
 
-        q.add(new State(start, 0));
-        visited.add(start);
+			for (int i = 0; i <= N - K; i++) {
+				int[] nextArr = reverse(currArr, i, K);
+				String nextStr = arrToStr(nextArr);
 
-        while (!q.isEmpty()) {
-            State cur = q.poll();
-            String cValue = cur.value;
-            int cCnt = cur.cnt;
+				if (!dist.containsKey(nextStr)) {
+					dist.put(nextStr, currCost + 1);
+					q.offer(nextArr);
+				}
+			}
+		}
 
-            for (int i = 0; i <= n - k; i++) {
-                String nValue = reverseSubArray(cValue, i, i + k);
+		return -1;
+	}
 
-                if (!visited.contains(nValue)) {
-                    if (nValue.equals(target)) {
-                        return cCnt + 1;
-                    }
-                    visited.add(nValue);
-                    q.add(new State(nValue, cCnt + 1));
-                }
-            }
-        }
-        return -1;
-    }
+	public static String arrToStr(int[] arr) {
+		StringBuilder sb = new StringBuilder();
+		for (int num : arr) {
+			sb.append(num).append(" ");
+		}
+		return sb.toString();
+	}
 
-    private static String reverseSubArray(String s, int start, int end) {
-        StringBuilder sb = new StringBuilder(s.substring(start, end));
-        sb.reverse();
-        return s.substring(0, start) + sb + s.substring(end);
-    }
+	public static int[] reverse(int[] arr, int start, int k) {
+		// 1. 배열 복사
+		int[] newArr = Arrays.copyOf(arr, N);
+
+		// 2. 뒤집을 구간 설정
+		int left = start;
+		int right = start + k - 1;
+
+		// 3. 투 포인터로 뒤집기
+		while (left < right) {
+			int temp = newArr[left];
+			newArr[left] = newArr[right];
+			newArr[right] = temp;
+			left++;
+			right--;
+		}
+
+		return newArr;
+	}
 }
