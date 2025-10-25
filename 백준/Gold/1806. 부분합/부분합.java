@@ -20,11 +20,11 @@ public class Main {
 			numbers[i] = Integer.parseInt(st.nextToken());
 		}
 
-		//연속된 수들의 부분합 구하기
 		int lt = 0;
 		int sum = 0;
 		boolean flag = false;
 		for(int rt = 0; rt < N; rt++) {
+			//부분합 구하기
 			sum += numbers[rt];
 			while(sum >= S) {
 				answer = Math.min(answer, rt - lt + 1);
@@ -33,7 +33,6 @@ public class Main {
 				flag = true;
 			}
 		}
-
 
 		System.out.println(flag ? answer : 0);
 	}
