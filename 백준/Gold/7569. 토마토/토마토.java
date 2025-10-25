@@ -10,7 +10,6 @@ public class Main {
 
 	static int M, N, H, sh, sy, sx, tomatoCnt;
 	static int[][][] box;
-	static boolean[][][] visited;
 	static final int[] dh = {1, -1, 0, 0, 0, 0}; //위, 아래, 왼쪽, 오른쪽, 앞, 뒤
 	static final int[] dy = {0, 0, 0, 0, -1, 1};
 	static final int[] dx = {0, 0, -1, 1, 0, 0};
@@ -32,7 +31,6 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		H = Integer.parseInt(st.nextToken());
 		box = new int[H][N][M]; //높이, 세로, 가로
-		visited = new boolean[H][N][M];
 		q = new ArrayDeque<>();
 
 		tomatoCnt = 0; //익지 않은 토마토 개수
@@ -44,7 +42,6 @@ public class Main {
 					if(box[h][i][j] == 0) tomatoCnt++;
 					if(box[h][i][j] == 1) {
 						q.offer(new Point(h, i, j));
-						visited[h][i][j] = true;
 					}
 				}
 			}
@@ -72,11 +69,10 @@ public class Main {
 					int nx = cx + dx[i];
 
 					if(nh < 0 || nh >= H || ny < 0 || ny >= N || nx < 0 || nx >= M) continue;
-					if(box[nh][ny][nx] == -1 || visited[nh][ny][nx]) continue;
+					if(box[nh][ny][nx] == -1 || box[nh][ny][nx] == 1) continue;
 
 					q.offer(new Point(nh, ny, nx));
 					box[nh][ny][nx] = 1;
-					visited[nh][ny][nx] = true;
 					tomatoCnt--;
 					if(tomatoCnt == 0) {
 						answer = time;
