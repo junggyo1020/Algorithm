@@ -64,7 +64,6 @@ public class Main {
 
             if(ny < 0 || ny >= N || nx < 0 || nx >= N) continue;
             if(!visited[ny][nx] && map[ny][nx] == ch) {
-                visited[ny][nx] = true;
                 dfs(ny, nx, ch);
             }
         }
