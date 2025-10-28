@@ -1,53 +1,55 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Main {
+public class Main {
+	static int N;
+	static StringTokenizer st;
 
-    static class Class implements Comparable<Class> {
-        int s, e;
+	static class Room implements Comparable<Room>{
+		int s, e;
+		Room(int s, int e) {
+			this.s = s;
+			this.e = e;
+		}
 
-        Class(int s, int e) {
-            this.s = s;
-            this.e = e;
-        }
+		@Override
+		public int compareTo(Room o) {
+			if(this.s == o.s) return Integer.compare(this.e, o.e);
+			return Integer.compare(this.s, o.s);
+		}
+	}
 
-        @Override
-        public int compareTo(Class o) {
-            if(o.e == this.e) return this.s - o.s;
-            return this.e - o.e;
-        }
-    }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		PriorityQueue<Room> spq = new PriorityQueue<>();
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			int s = Integer.parseInt(st.nextToken());
+			int e = Integer.parseInt(st.nextToken());
+			spq.offer(new Room(s, e));
+		}
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        int[][] lectures = new int[n][2];
-        for (int i = 0; i < n; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            lectures[i][0] = Integer.parseInt(st.nextToken());
-            lectures[i][1] = Integer.parseInt(st.nextToken());
-        }
+		PriorityQueue<Integer> epq = new PriorityQueue<>();
+		epq.offer(spq.poll().e);
 
-        Arrays.sort(lectures, Comparator.comparingInt(o -> o[0]));
+		while(!spq.isEmpty()) {
+			Room cur = spq.poll();
 
-        PriorityQueue<Integer> pQ = new PriorityQueue<>();
+			if(cur.s >= epq.peek()) {
+				epq.poll();
+				epq.offer(cur.e);
+			} else {
+				epq.offer(cur.e);
+			}
+		}
 
-        for (int[] lecture : lectures) {
-            int startTime = lecture[0];
-            int endTime = lecture[1];
-
-            if (!pQ.isEmpty() && pQ.peek() <= startTime) {
-                pQ.poll();
-            }
-            
-            pQ.offer(endTime);
-        }
-
-        System.out.println(pQ.size());
-    }
+		System.out.println(epq.size());
+	}
 }
