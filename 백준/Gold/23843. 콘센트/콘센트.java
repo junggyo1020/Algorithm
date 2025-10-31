@@ -39,11 +39,6 @@ public class Main {
 		while(!pq.isEmpty()) {
 			endTime = pq.poll();
 		}
-		//
-		// Long endTime = -1L;
-		// for(int i = 0; i < M; i++) {
-		// 	endTime = Math.max(endTime, pq.poll());
-		// }
 
 		System.out.println(endTime);
 
