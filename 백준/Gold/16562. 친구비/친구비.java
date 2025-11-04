@@ -3,59 +3,69 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Main {
+public class Main {
 
-    static int N, M, K;
-    static int[] cost, parent;
+	static int N, M, K;
+	static int[] money;
+	static int[] parent;
 
-    private static int find(int n) {
-        if(parent[n] == n) return n;
-        return parent[n] = find(parent[n]);
-    }
-    private static void union(int a, int b) {
-        int fa = find(a);
-        int fb = find(b);
-        if(fa == fb) return;
-        if (cost[fa] < cost[fb]) {
-            parent[fb] = fa;
-        } else {
-            parent[fa] = fb;
-        }
-    }
+	static void union(int x, int y) {
+		int rootX = find(x);
+		int rootY = find(y);
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+		if(rootX == rootY) return;
 
-        parent = new int[N+1];
-        cost = new int[N+1];
+		if(money[rootX] < money[rootY]) {
+			parent[rootY] = rootX;
+		} else {
+			parent[rootX] = rootY;
+		}
+	}
 
-        st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; i++) {
-            cost[i] = Integer.parseInt(st.nextToken());
-            parent[i] = i;
-        }
+	static int find(int x) {
+		if(parent[x] == x) return x;
+		return parent[x] = find(parent[x]);
+	}
 
-        for (int i = 0; i < M; i++) {
-            st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            union(u, v);
-        }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-        long totalCost = 0;
-        for (int i = 1; i <= N; i++) {
-            if (parent[i] == i) { //하나의 무리의 최소 친구비
-                totalCost += cost[i];
-            }
-        }
+		N = Integer.parseInt(st.nextToken()); //학생 수
+		M = Integer.parseInt(st.nextToken()); //친구관계 수
+		K = Integer.parseInt(st.nextToken()); //가지고 있는 돈
+		money = new int[N+1]; //각각 학생들이 원하는 친구비
+		st = new StringTokenizer(br.readLine());
+		for(int i = 1; i <= N; i++) {
+			money[i] = Integer.parseInt(st.nextToken());
+		}
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(totalCost <= K ? totalCost : "Oh no");
+		//초기화 (make-set)
+		parent = new int[N+1];
+		for(int i = 1; i <= N; i++) {
+			parent[i] = i;
+		}
 
-        System.out.println(sb);
-    }
+		//친구 관계 확인하기
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+			union(x, y);
+		}
+
+		int totalCost = 0;
+
+		for(int i = 1; i <= N; i++) {
+			if(parent[i] == i) {
+				totalCost += money[i];
+			}
+		}
+
+		if(totalCost <= K) {
+			System.out.println(totalCost);
+		} else {
+			System.out.println("Oh no");
+		}
+	}
 }
