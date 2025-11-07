@@ -20,10 +20,10 @@ public class Main {
         isDecimal = new boolean[MAX+1];
         Arrays.fill(isDecimal, true);
         isDecimal[0] = isDecimal[1] = false;
-        for(long i = 2; i*i <= MAX; i++) {
-            if(isDecimal[(int)i]) {
-                for (long j = i * i; j <= MAX; j += i) {
-                    isDecimal[(int) j] = false;
+        for(int i = 2; (long)i*i <= MAX; i++) {
+            if(isDecimal[i]) {
+                for (int j = i * i; j <= MAX; j += i) {
+                    isDecimal[j] = false;
                 }
             }
         }
