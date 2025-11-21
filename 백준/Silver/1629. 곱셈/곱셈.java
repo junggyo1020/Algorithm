@@ -4,24 +4,25 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		long a = Long.parseLong(st.nextToken());
-		long b = Long.parseLong(st.nextToken());
-		long c = Long.parseLong(st.nextToken());
+    static int A, B, C;
 
-		long answer = pow(a, b, c);
+    private static long pow (int a, int b) {
+//        System.out.println("pow("+a+", "+ b + ")");;
+        if(b == 1) return a % C; // 1
 
-		System.out.println(answer);
-	}
+        long half = pow(a, b / 2); // 2
 
-	private static long pow(long a, long b, long c) {
-		if (b == 1) return a % c;
-		long half = pow(a, b / 2, c);
-		long temp = (half * half) % c;
+        if(b % 2 == 0) return (half * half) % C; // 3
+        else return ((half * half % C) * a) % C; // 4
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        A = Integer.parseInt(st.nextToken());
+        B = Integer.parseInt(st.nextToken());
+        C = Integer.parseInt(st.nextToken());
 
-		return (b % 2 == 0) ? temp : (temp * a) % c;
-	}
+        System.out.println(pow(A, B));
+    }
 }
