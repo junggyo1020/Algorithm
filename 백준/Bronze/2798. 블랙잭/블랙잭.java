@@ -1,40 +1,43 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-class Main{
+public class Main {
 
-    public static void main(String[] args) throws IOException {
+	static int N, M;
+	static int[] numbers;
+	static int answer = Integer.MIN_VALUE;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-        String[] input = br.readLine().split(" ");
-        int n = Integer.parseInt(input[0]);
-        int m = Integer.parseInt(input[1]);
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 
-        int[] card = new int[n];
+		st = new StringTokenizer(br.readLine());
+		numbers = new int[N];
+		for(int i = 0; i < N; i++) {
+			numbers[i] = Integer.parseInt(st.nextToken());
+		}
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < n; i++) {
-            card[i] = Integer.parseInt(st.nextToken());
-        }
+		for(int i = 0; i < N; i++) {
+			for(int j = i + 1; j < N; j++ ) {
+				for(int k = j + 1; k < N; k++ ){
+					int sum = numbers[i] + numbers[j] + numbers[k];
+					if(sum > M) continue;
+					if(sum <= M) {
+						if(sum == M) {
+							System.out.println(sum);
+							return;
+						}
+						answer = Math.max(answer, sum);
+					}
+				}
+			}
+		}
 
-        int max = 0;
-        for (int i = 0; i < n - 2; i++) {
-            for (int j = i + 1; j < n - 1; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    int sum = card[i] + card[j] + card[k];
-
-                    if(sum <= m && max < sum){
-                        max = sum;
-                    }
-                }
-            }
-        }
-
-        bw.write(max + "\n");
-        bw.flush();
-        bw.close();
-
-    }
+		System.out.println(answer);
+	}
 }
