@@ -11,7 +11,6 @@ public class Main {
 		int T = Integer.parseInt(br.readLine());
 		for(int t = 1; t <= T; t++) {
 			String str = br.readLine();
-
 			checkPalindrome(str);
 		}
 
@@ -21,9 +20,8 @@ public class Main {
 	private static void checkPalindrome(String s) {
 		int lt = 0;
 		int rt = s.length() - 1;
-		boolean flag = false;
 		while(lt < rt) {
-			if(s.charAt(lt) == s.charAt(rt) && !flag) {
+			if(s.charAt(lt) == s.charAt(rt)) {
 				lt++;
 				rt--;
 			} else {
@@ -38,7 +36,6 @@ public class Main {
 				}
 			}
 		}
-
 		sb.append("0").append("\n");
 		return;
 	}
