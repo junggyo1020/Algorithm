@@ -31,9 +31,6 @@ public class Main {
 			while(hS.contains(num)) {
 				hS.remove(numbers[lt]);
 				lt++;
-
-				//종료조건
-				if(lt >= N) break;
 			}
 
 			hS.add(num);
