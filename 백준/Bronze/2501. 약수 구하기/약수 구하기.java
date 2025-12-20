@@ -1,26 +1,44 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
 
-class Main{
+public class Main {
 
-    public static void main(String[] args) throws IOException {
+	static int N, K;
+	static ArrayList<Long> list;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String[] s = br.readLine().split(" ");
+	private static void solution() {
+		list = new ArrayList<>();
 
-        int n = Integer.parseInt(s[0]);
-        int k = Integer.parseInt(s[1]);
+		for(long i = 1; i*i <= N; i++) {
+			if(N % i == 0) {
+				list.add(i);
 
-        int cnt = 0;
-        for (int i = 1; i <= n; i++) {
-            if (n % i == 0) {
-                cnt++;
-            }
-            if (cnt == k) {
-                System.out.println(i);
-                return;
-            }
-        }
-        System.out.println(0);
+				if(i*i != N) {
+					list.add(N/i);
+				}
+			}
+		}
 
-    }
+		//정렬
+		Collections.sort(list);
+
+		//출력
+		long result = list.size() >= K ? list.get(K-1) : 0L;
+		System.out.println(result);
+	}
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+
+		//N개의 약수 모두 구하기
+		solution();
+	}
 }
