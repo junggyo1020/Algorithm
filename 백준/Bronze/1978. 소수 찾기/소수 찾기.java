@@ -1,36 +1,45 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
-class Main{
+public class Main {
 
-    public static void main(String[] args) throws IOException {
+	static int N;
+	static boolean[] isPrime;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static void sieve() {
+		isPrime = new boolean[1001];
+		Arrays.fill(isPrime, true);
+		isPrime[0] = isPrime[1] = false;
 
-        int n = Integer.parseInt(br.readLine());
-        String[] input = br.readLine().split(" ");
+		for(int i = 2; i*i <= 1000; i++) {
+			if(isPrime[i]) {
+				for(int j = i*i; j <= 1000; j+=i) {
+					isPrime[j] = false;
+				}
+			}
+		}
+	}
 
-        boolean[] isPrime = new boolean[1001];
-        Arrays.fill(isPrime, true);
-        isPrime[0] = false;
-        isPrime[1] = false;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
 
-        //소수 찾기
-        for (int i = 2; i * i <= 1000; i++) {
-            if(isPrime[i]){
-                for (int j = i * i; j <= 1000; j += i) {
-                    isPrime[j] = false;
-                }
-            }
-        }
+		//전처리
+		sieve();
 
-        //주어진 수들 중 소수의 개수 출력
-        int cnt = 0;
-        for(String i : input){
-            if(isPrime[Integer.parseInt(i)]){
-                cnt++;
-            }
-        }
-        System.out.println(cnt);
-    }
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int count = 0; //소수의 개수
+		for(int i = 0; i < N; i++) {
+			int num = Integer.parseInt(st.nextToken());
+
+			if(isPrime[num]) {
+				count++;
+			}
+		}
+
+		System.out.println(count);
+	}
 }
