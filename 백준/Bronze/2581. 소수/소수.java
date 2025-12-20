@@ -1,45 +1,52 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
-class Main{
+public class Main {
 
-    public static void main(String[] args) throws IOException {
+	static int N, M;
+	static boolean[] isPrime;
+	static final int SIZE = 10000;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static void sieve() {
+		isPrime = new boolean[SIZE+1];
+		Arrays.fill(isPrime, true);
+		isPrime[0] = isPrime[1] = false;
 
-        int m = Integer.parseInt(br.readLine());
-        int n = Integer.parseInt(br.readLine());
+		for(int i = 2; i*i <= N; i++) {
+			if(isPrime[i]) {
+				for(int j = i*i; j <= N; j+=i) {
+					isPrime[j] = false;
+				}
+			}
+		}
+	}
 
-        //소수 찾기
-        boolean[] isPrime = new boolean[n+1];
-        Arrays.fill(isPrime, true);
-        isPrime[0] = false;
-        isPrime[1] = false;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		M = Integer.parseInt(br.readLine());
+		N = Integer.parseInt(br.readLine());
 
-        for (int i = 2; i * i <= n; i++) {
-            if (isPrime[i]) {
-                for (int j = i * i; j <= n; j += i) {
-                    isPrime[j] = false;
-                }
-            }
-        }
+		int sum = 0;
+		int min = Integer.MAX_VALUE;
 
-        int sum = 0;
-        int min = Integer.MAX_VALUE;
+		sieve();
+		boolean flag = false;
 
-        for (int i = m; i <= n; i++) {
-            if (isPrime[i]) {
-                if(min == Integer.MAX_VALUE){
-                    min = i;
-                }
-                sum += i;
-            }
-        }
-        if (sum == 0) {
-            System.out.println(-1);
-        } else {
-            System.out.println(sum);
-            System.out.println(min);
-        }
-    }
+		for(int i = M; i <= N; i++) {
+			if(isPrime[i]) {
+				sum += i;
+				min = Math.min(min, i);
+				flag = true;
+			}
+		}
+
+		if(flag) {
+			System.out.println(sum);
+			System.out.println(min);
+		} else {
+			System.out.println(-1);
+		}
+	}
 }
