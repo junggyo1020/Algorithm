@@ -1,30 +1,26 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
 
-class Main{
+public class Main {
 
-    public static void main(String[] args) throws IOException {
+	static int N;
+	static ArrayList<Integer> list;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		list = new ArrayList<>();
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < N; i++) {
+			list.add(Integer.parseInt(st.nextToken()));
+		}
 
-        int n = Integer.parseInt(br.readLine());
-        String[] s = br.readLine().split(" ");
-        int max = Integer.parseInt(s[0]);
-        int min = Integer.parseInt(s[0]);
-
-        for (int i = 1; i < n; i++) {
-            int num = Integer.parseInt(s[i]);
-            if (max < num) {
-                max = num;
-            }
-            if (min > num) {
-                min = num;
-            }
-        }
-
-        bw.write(min + " " + max + "\n");
-
-        bw.flush();
-        bw.close();
-    }
+		StringBuilder sb = new StringBuilder();
+		sb.append(Collections.min(list)).append(" ").append(Collections.max(list));
+		System.out.println(sb);
+	}
 }
