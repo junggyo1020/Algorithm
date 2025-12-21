@@ -6,63 +6,64 @@ import java.util.StringTokenizer;
 public class Main {
 
 	static int N;
-	static int[] numbers;
-	static int[] operators = new int[4]; // +, -, *, / 의 개수
-	static int max = Integer.MIN_VALUE; // 최댓값
-	static int min = Integer.MAX_VALUE; // 최솟값
+	static int[] num;
+	static int[] operator;
+	static int max = Integer.MIN_VALUE;
+	static int min = Integer.MAX_VALUE;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine()); // 수의 개수
-
+		N = Integer.parseInt(br.readLine());
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		numbers = new int[N]; // 숫자 배열
-		for (int i = 0; i < N; i++) {
-			numbers[i] = Integer.parseInt(st.nextToken());
+		num = new int[N];
+		for(int i = 0; i < N; i++) {
+			num[i] = Integer.parseInt(st.nextToken());
 		}
 
+		//연산자 개수
+		operator = new int[4];
 		st = new StringTokenizer(br.readLine());
-		for (int i = 0; i < 4; i++) {
-			operators[i] = Integer.parseInt(st.nextToken());
+		for(int i = 0; i < 4; i++) {
+			operator[i] = Integer.parseInt(st.nextToken());
 		}
 
-		// 백트래킹(DFS)
-		dfs(numbers[0], 1);
+		dfs(1, num[0]);
 
 		System.out.println(max);
 		System.out.println(min);
 	}
 
-	private static void dfs(int num, int idx) {
-		// Step 3. 모든 숫자를 다 사용했으면 최댓값/최솟값 갱신
-		if (idx == N) {
-			max = Math.max(max, num);
-			min = Math.min(min, num);
+	private static void dfs(int cnt, int sum) {
+		//연산자 모두 골랐으므로
+		if(cnt == N) {
+			max = Math.max(max, sum);
+			min = Math.min(min, sum);
 			return;
 		}
 
-		for (int i = 0; i < 4; i++) {
-			// 사용할 수 있는 연산자가 남아있는 경우
-			if (operators[i] > 0) {
-				// 해당 연산자 개수를 하나 줄임 (사용 처리)
-				operators[i]--;
-
-				switch (i) {
-					case 0: // 덧셈
-						dfs(num + numbers[idx], idx + 1);
-						break;
-					case 1: // 뺄셈
-						dfs(num - numbers[idx], idx + 1);
-						break;
-					case 2: // 곱셈
-						dfs(num * numbers[idx], idx + 1);
-						break;
-					case 3: // 나눗셈
-						dfs(num < 0 ? -1 * (Math.abs(num) / numbers[idx]) : num / numbers[idx], idx + 1);
-						break;
-				}
-				operators[i]++;
+		//값 계산하기
+		for(int i = 0; i < 4; i++) {
+			if(operator[i] == 0) continue;
+			operator[i]--;
+			switch (i) {
+				case 0:
+					dfs(cnt + 1, sum + num[cnt]);
+					break;
+				case 1:
+					dfs(cnt + 1, sum - num[cnt]);
+					break;
+				case 2:
+					dfs(cnt + 1, sum * num[cnt]);
+					break;
+				case 3:
+					if (sum < 0) {
+						dfs(cnt + 1, (sum * (-1) / num[cnt]) * (-1));
+					} else {
+						dfs(cnt + 1, sum / num[cnt]);
+					}
+					break;
 			}
+			operator[i]++;
 		}
 	}
 }
