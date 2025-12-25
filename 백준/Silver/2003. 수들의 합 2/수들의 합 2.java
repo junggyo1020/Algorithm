@@ -12,21 +12,22 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 
-		int[] nums = new int[N];
+		int[] arr = new int[N];
 		st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			nums[i] = Integer.parseInt(st.nextToken());
+			arr[i] = Integer.parseInt(st.nextToken());
 		}
 
-		//투 포인터
-		int res = 0; // 합이 M이 되는 개수
-		int sum = 0; // 누적합
-		int s = 0; // 시작 포인터
-		for (int e = 0; e < N; e++) { //확장
-			sum += nums[e];
-			while(sum >= M){ //축소
-				if(sum == M) res++;
-				sum -= nums[s++];
+		int res = 0; //결과값
+		int sum = 0; //누적합
+		int s = 0;
+
+		for(int e = 0; e < N; e++){
+			sum += arr[e];
+
+			while(sum >= M) {
+				if (sum == M) res++;
+				sum -= arr[s++];
 			}
 		}
 
