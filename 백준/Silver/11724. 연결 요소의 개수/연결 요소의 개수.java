@@ -7,42 +7,50 @@ import java.util.StringTokenizer;
 
 class Main {
 
-    static List<List<Integer>> list;
+    static int N, M;
+    static List<Integer>[] adj;
     static boolean[] visited;
-    static int N, M, answer;
+    static int answer;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
-        list = new ArrayList<>();
-        visited = new boolean[N+1];
-        for (int i = 0; i <= N; i++) {
-            list.add(new ArrayList<>());
+
+        adj = new ArrayList[N+1];
+        for(int i = 1; i <= N; i++) {
+            adj[i] = new ArrayList<>();
         }
-        for (int i = 0; i < M; i++) {
+
+        visited = new boolean[N+1];
+
+        //간선 입력
+        for(int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            list.get(a).add(b);
-            list.get(b).add(a);
+            adj[a].add(b);
+            adj[b].add(a);
         }
-        for (int i = 1; i <= N; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
+
+        //연결 요소 개수 구하기
+        for(int i = 1; i <= N; i++) {
+            if(!visited[i]) {
+                ++answer;
                 dfs(i);
-                answer++;
             }
         }
+
+        //결과 출력
         System.out.println(answer);
     }
 
-    private static void dfs(int pos) {
-        for (int x : list.get(pos)) {
-            if (!visited[x]) {
-                visited[x] = true;
-                dfs(x);
+    private static void dfs(int cur) {
+        visited[cur] = true;
+        for(int next : adj[cur]) {
+            if(!visited[next]) {
+                dfs(next);
             }
         }
     }
