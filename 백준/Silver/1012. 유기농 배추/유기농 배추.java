@@ -1,66 +1,62 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-public class Main {
+class Main {
 
-    static int n,m;
-
-    static int[][] grid;
-    static int[][] visited;
-    static int[] dy = {-1, 0, 1, 0};
-    static int[] dx = {0, 1, 0, -1};
+    static StringTokenizer st;
+    static int[][] map;
+    static int N, M, K;
+    static boolean[][] visited;
+    static int answer;
+    static final int[] dr = {-1, 1, 0, 0};
+    static final int[] dc = {0, 0, -1, 1};
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int t = Integer.parseInt(br.readLine());
+        int T = Integer.parseInt(br.readLine());
+        for(int t = 0; t < T; t++) {
+            answer = 0;
+            st = new StringTokenizer(br.readLine());
+            M = Integer.parseInt(st.nextToken());
+            N = Integer.parseInt(st.nextToken());
+            K = Integer.parseInt(st.nextToken());
 
-        // 테스트 케이스 반복
-        for (int T = 0; T < t; T++) {
-            String[] input = br.readLine().split(" ");
-            m = Integer.parseInt(input[0]);
-            n = Integer.parseInt(input[1]);
-            int k = Integer.parseInt(input[2]);
-            grid = new int[n][m];
-            visited = new int[n][m];
-
-            // 배추 심기
-            for (int i = 0; i < k; i++) {
-                String[] cab = br.readLine().split(" ");
-                int x = Integer.parseInt(cab[0]);
-                int y = Integer.parseInt(cab[1]);
-                grid[y][x] = 1;
+            //초기화
+            map = new int[N][M];
+            visited = new boolean[N][M];
+            for(int i = 0; i < K; i++) {
+                st = new StringTokenizer(br.readLine());
+                int b = Integer.parseInt(st.nextToken());
+                int a = Integer.parseInt(st.nextToken());
+                map[a][b] = 1; //배추 표시
             }
 
-            int count = 0;
-            // 흰 지렁이 개수 찾기(dfs)
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < m; j++) {
-                    if(visited[i][j] == 0 && grid[i][j] == 1){
-                        dfs(i,j);
-                        count++;
+            for(int i = 0; i < N; i++) {
+                for(int j = 0; j < M; j++) {
+                    if(!visited[i][j] && map[i][j] == 1) {
+                        ++answer;
+                        dfs(i, j);
                     }
                 }
             }
 
-            System.out.println(count);
+            System.out.println(answer);
         }
     }
 
-    public static void dfs(int y, int x) {
-        visited[y][x] = 1;
+    private static void dfs(int r, int c) {
+        visited[r][c] = true;
 
-        for (int i = 0; i < 4; i++) {
-            int ny = y + dy[i];
-            int nx = x + dx[i];
+        for(int d = 0; d < 4; d++) {
+            int nr = r + dr[d];
+            int nc = c + dc[d];
 
-            if (ny < 0 || nx < 0 || ny >= n || nx >= m) {
-                continue;
-            }
-            if (visited[ny][nx] == 0 && grid[ny][nx] == 1) {
-                dfs(ny, nx);
+            if(nr < 0 || nc < 0 || nr >= N || nc >= M) continue;
+            if(!visited[nr][nc] && map[nr][nc] == 1) {
+                dfs(nr, nc);
             }
         }
     }
-
 }
