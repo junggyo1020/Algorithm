@@ -1,81 +1,67 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
 
 class Main {
 
-    static int[] dy = {-1, 0, 1, 0};
-    static int[] dx = {0, 1, 0, -1};
-    static int n, ret, cnt;
-    static int[][] grid;
-    static int[][] visited;
-
-    public static int bfs(int y, int x){
-        Queue<int[]> q = new LinkedList<>();
-        visited[y][x] = 1;
-        q.add(new int[]{y, x});
-        ret = 1;
-
-        while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int cy = cur[0];
-            int cx = cur[1];
-
-            for (int i = 0; i < 4; i++) {
-                int ny = cy + dy[i];
-                int nx = cx + dx[i];
-
-                // 오버 플로우, 언더플로우 체크
-                if (ny < 0 || nx < 0 || ny >= n || nx >= n) {
-                    continue;
-                }
-
-                // 방문하지 않았고, 집이 존재하는 경우 이어서 탐색
-                if(visited[ny][nx] == 0 && grid[ny][nx] != 0){
-                    visited[ny][nx] = 1;
-                    q.add(new int[]{ny, nx});
-                    ret += 1;
-                }
-            }
-        }
-        return ret;
-    }
+    static int N;
+    static int[][] map;
+    static boolean[][] visited;
+    static StringTokenizer st;
+    static final int[] dr = {-1, 1, 0, 0};
+    static final int[] dc = {0, 0, -1, 1};
+    static int groupCnt, cnt;
+    static List<Integer> answer;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        n = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
+        map = new int[N][N];
+        answer = new ArrayList<>();
+        visited = new boolean[N][N];
 
-        // 배열 재정의
-        grid = new int[n][n];
-        visited = new int[n][n];
-
-        // 지도 입력하기
-        for (int i = 0; i < n; i++) {
+        for(int i = 0; i < N; i++) {
             String str = br.readLine();
-            for (int j = 0; j < n; j++) {
-                grid[i][j] = str.charAt(j) - '0';
+            for (int j = 0; j < N; j++) {
+                map[i][j] = str.charAt(j) - '0';
             }
         }
 
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                // 방문하지 않았고, 집이 존재하는 경우
-                if (visited[i][j] == 0 && grid[i][j] != 0) {
-                    list.add(bfs(i,j));
-                    cnt++;
+        for(int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if(!visited[i][j] && map[i][j] != 0) {
+                    ++groupCnt;
+                    dfs(i, j);
+                    answer.add(cnt);
+                    cnt = 0;
                 }
             }
         }
 
-        // 리스트를 오름차순 정렬
-        Collections.sort(list);
-
-        // 결과 출력
-        System.out.println(cnt);
-        for (int i : list) {
-            System.out.println(i);
+        System.out.println(groupCnt);
+        Collections.sort(answer);
+        for(int x : answer) {
+            System.out.println(x);
         }
     }
+
+    private static void dfs(int r, int c) {
+        visited[r][c] = true;
+        cnt++;
+
+        for(int i = 0; i < 4; i++) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+
+            if(nr < 0 || nr >= N || nc < 0 || nc >= N) continue;
+            if(!visited[nr][nc] && map[nr][nc] == 1) {
+                dfs(nr, nc);
+            }
+        }
+    }
+
 }
