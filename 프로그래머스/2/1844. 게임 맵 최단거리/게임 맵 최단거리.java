@@ -1,28 +1,50 @@
 import java.util.*;
+
 class Solution {
+    
+    private static final int[] dr = {-1, 1, 0, 0};
+    private static final int[] dc = {0, 0, -1, 1};
+    
+    static int[][] visited;
+    
+    static class Node {
+        int r, c;
+        Node(int r, int c) {
+            this.r = r;
+            this.c = c;
+        }
+    }
+    
     public int solution(int[][] maps) {
-        int n = maps.length;
-        int m = maps[0].length;
-        int[] dy = {-1,1,0,0}; //상하좌우
-        int[] dx = {0,0,-1,1};
+        int N = maps.length;
+        int M = maps[0].length;
         
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{0,0});
+        visited = new int[N][M];
         
-        while(!q.isEmpty()){
-            int[] cur = q.poll();
-            int y = cur[0];
-            int x = cur[1];
-            for(int i = 0; i < 4; i++){
-                int ny = y + dy[i];
-                int nx = x + dx[i];
-                if(ny<0||ny>=n||nx<0||nx>=m||maps[ny][nx]!=1) continue;
-                maps[ny][nx] = maps[y][x] + 1; //최단거리를 위한 거리계산
-                q.offer(new int[]{ny, nx});
+        Queue<Node> q = new ArrayDeque<>();
+        q.offer(new Node(0, 0));
+        visited[0][0] = 1;
+        while(!q.isEmpty()) {
+            Node cur = q.poll();
+            for(int i = 0; i < 4; i++) {
+                int nr = cur.r + dr[i];
+                int nc = cur.c + dc[i];
+                
+                if(nr < 0 || nc < 0 || nr >= N || nc >= M) continue;
+                if(maps[nr][nc] == 1 && visited[nr][nc] == 0) {
+                    visited[nr][nc] = visited[cur.r][cur.c] + 1;
+                    q.offer(new Node(nr, nc));
+                }
             }
         }
         
-        return maps[n-1][m-1] > 1 ? maps[n-1][m-1] : -1;
+        // for(int i = 0; i < N; i++) {
+        //     for(int j = 0; j < M; j++) {
+        //         System.out.print(visited[i][j] + " ");
+        //     }
+        //     System.out.println();
+        // }
         
+        return visited[N-1][M-1] == 0 ? -1 : visited[N-1][M-1];
     }
 }
