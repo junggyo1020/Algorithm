@@ -2,32 +2,29 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String[] operations) {
-        PriorityQueue<Integer> maxPQ = new PriorityQueue<>(Collections.reverseOrder());
-        PriorityQueue<Integer> minPQ = new PriorityQueue<>();
+        TreeMap<Integer, Integer> tM = new TreeMap<>();
         
-        //1. 작업 읽기
         for(String s : operations) {
             StringTokenizer st = new StringTokenizer(s);
             char op = st.nextToken().charAt(0);
             int num = Integer.parseInt(st.nextToken());
-
+            
             if(op == 'I') {
-                maxPQ.offer(num);
-                minPQ.offer(num);
-            }
-            else if(!maxPQ.isEmpty() && !minPQ.isEmpty()){
+                tM.merge(num, 1, Integer::sum);
+            } else if(!tM.isEmpty()) {
                 if(num == 1) {
-                    int maxVal = maxPQ.poll();
-                    minPQ.remove(maxVal);
+                    int maxKey = tM.lastKey();
+                    if(tM.get(maxKey) == 1) tM.remove(maxKey);
+                    else tM.merge(tM.lastKey(), -1, Integer::sum);
+                } else {
+                    int minKey = tM.firstKey();
+                    if(tM.get(minKey) == 1) tM.remove(minKey);
+                    else tM.merge(tM.firstKey(), -1, Integer::sum);
                 }
-                else if(num == -1) {
-                    int minVal = minPQ.poll();
-                    maxPQ.remove(minVal);
-                }
-            }
+            } 
         }
         
-        if(maxPQ.isEmpty()) return new int[]{0, 0};
-        return new int[]{maxPQ.poll(), minPQ.poll()};
+        if(tM.isEmpty()) return new int[]{0, 0};
+        return new int[]{tM.lastKey(), tM.firstKey()};
     }
 }
