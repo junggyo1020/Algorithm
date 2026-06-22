@@ -1,47 +1,43 @@
-import java.util.*;
-
 class Solution {
-    
-    private int compress(String s, int length){
-        StringBuilder sb = new StringBuilder();
-        // 개수 만큼 나뉘어진 token으로 비교해서 압축 진행하기
-        String last = ""; // 비교를 위한 이전 token 선언
-        int count = 0;
-        for(String token : split(s, length)){
-            if(token.equals(last)) count++;
-            else {
-                if(count > 1) sb.append(count);
-                sb.append(last);
-                last = token;
-                count = 1;
-            }
-        }
-        if(count > 1) sb.append(count);
-        sb.append(last);
-        
-        return sb.length();
-    }
-    
-    private List<String> split(String s, int length){
-        List<String> tokens = new ArrayList<>();
-        for(int startIdx = 0; startIdx < s.length(); startIdx += length){
-            int endIdx = startIdx + length;
-            if(endIdx > s.length()) endIdx = s.length();
-            tokens.add(s.substring(startIdx, endIdx));
-        }
-        
-        return tokens;
-    }
-    
     public int solution(String s) {
-        int min = Integer.MAX_VALUE;
-        for(int length = 1; length <= s.length(); length++){
-            int compressed = compress(s, length);
-            // 최소 길이 구하는 공식
-            if(min > compressed){
-                min = compressed;
+        int len = s.length();
+        int answer = len;
+        
+        for(int k = 1; k <= len/2; k++) {
+            StringBuilder sb = new StringBuilder();
+            String prev = "";
+            int count = 1;
+            int nextStart = 0;
+            for(int i = 0; i+k <= len; i+=k) {
+                String sub = s.substring(i, i+k);
+                if(sub.equals(prev)) {
+                    count++;
+                } else {
+                    flush(sb, prev, count);
+                    prev = sub;
+                    count = 1;
+                }
+                nextStart = i+k;
             }
+            
+            flush(sb, prev, count);
+            
+            //남은 문자열은 그대로 붙여넣는다.
+            if(nextStart < len) {
+                sb.append(s.substring(nextStart));
+            }
+            
+            //길이 계산
+            int size = sb.toString().length();
+
+            //최소길이 갱신
+            answer = Math.min(answer, size);
         }
-        return min;
+        return answer;
+    }
+    
+    private static void flush(StringBuilder sb, String prev, int count) {
+        if(count > 1) sb.append(count).append(prev);
+        else sb.append(prev);
     }
 }
