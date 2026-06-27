@@ -2,49 +2,39 @@ import java.util.*;
 
 class Solution {
     
-    private static final int[] dr = {-1, 1, 0, 0};
-    private static final int[] dc = {0, 0, -1, 1};
-    
-    static int[][] visited;
-    
-    static class Node {
-        int r, c;
-        Node(int r, int c) {
-            this.r = r;
-            this.c = c;
-        }
-    }
+    static final int[] dy = {-1, 1, 0, 0};
+    static final int[] dx = {0, 0, -1, 1};
     
     public int solution(int[][] maps) {
-        int N = maps.length;
-        int M = maps[0].length;
+        int n = maps.length;
+        int m = maps[0].length;
         
-        visited = new int[N][M];
+        Queue<int[]> q = new ArrayDeque<>();
+        int[][] visited = new int[n][m];
+        for(int i = 0; i < n; i++) {
+            Arrays.fill(visited[i], -1);
+        }
         
-        Queue<Node> q = new ArrayDeque<>();
-        q.offer(new Node(0, 0));
+        q.offer(new int[]{0, 0});
         visited[0][0] = 1;
+        
         while(!q.isEmpty()) {
-            Node cur = q.poll();
+            int[] cur = q.poll();
+            int y = cur[0];
+            int x = cur[1];
+            
             for(int i = 0; i < 4; i++) {
-                int nr = cur.r + dr[i];
-                int nc = cur.c + dc[i];
+                int ny = y + dy[i];
+                int nx = x + dx[i];
                 
-                if(nr < 0 || nc < 0 || nr >= N || nc >= M) continue;
-                if(maps[nr][nc] == 1 && visited[nr][nc] == 0) {
-                    visited[nr][nc] = visited[cur.r][cur.c] + 1;
-                    q.offer(new Node(nr, nc));
-                }
+                if(ny < 0 || ny >= n || nx < 0 || nx >= m) continue;
+                if(visited[ny][nx] != -1 || maps[ny][nx] == 0) continue;
+                
+                visited[ny][nx] = visited[y][x] + 1;
+                q.offer(new int[]{ny, nx});
             }
         }
         
-        // for(int i = 0; i < N; i++) {
-        //     for(int j = 0; j < M; j++) {
-        //         System.out.print(visited[i][j] + " ");
-        //     }
-        //     System.out.println();
-        // }
-        
-        return visited[N-1][M-1] == 0 ? -1 : visited[N-1][M-1];
+        return visited[n-1][m-1];
     }
 }
