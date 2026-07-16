@@ -1,13 +1,18 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
-        for(int w = 3; w <= 5000; w++){
-            for(int h = 1; h <= 5000; h++){
-                int area = (w-2)*(h-2);
-                if((yellow == area) && (brown == (w*h)-area)){
-                    return new int[]{h,w};
-                }
+        int[] answer = new int[2];
+        
+        for(int c = 3; c <= 5000; c++) {
+            int r = (brown + yellow) / c;
+            
+            if((r-2) * (c-2) == yellow) {
+                answer[0] = r;
+                answer[1] = c;
+                break;
             }
+            
         }
-        return null;
+        
+        return answer;
     }
 }
