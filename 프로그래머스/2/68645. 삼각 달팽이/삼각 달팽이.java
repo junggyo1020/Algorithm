@@ -1,37 +1,43 @@
 class Solution {
-    
-    private static final int[] dy = {1, 0, -1};
-    private static final int[] dx = {0, 1, -1};
-    
     public int[] solution(int n) {
-        int[][] arr = new int[n][n];
-        int x = 0, y = 0;
-        int d = 0;
-        int v = 1;
+        int size = n*(n+1)/2;
+        int[] answer = new int[size];
+        int[][] grid = new int[n][n];
         
-        while(true){
-            arr[y][x] = v++;
-            int ny = y + dy[d];
-            int nx = x + dx[d];
-            if(ny < 0 || ny >= n || nx < 0 || nx >= n || arr[ny][nx] != 0){
-                d = (d + 1) % 3;
-                ny = y + dy[d];
-                nx = x + dx[d];
-                if(ny < 0 || ny >= n || nx < 0 || nx >= n || arr[ny][nx] != 0){
-                    break;
+        if(n == 1) return new int[]{1};
+        
+        int idx = 1;
+        int dir = 0;
+        int y = 0, x = 0;
+        grid[0][0] = 1;
+        while(idx < size) {
+            if(dir == 0) {
+                while(y+1 < n && grid[y+1][x] == 0) {
+                    y++;
+                    grid[y][x] = ++idx;
                 }
             }
-            y = ny;
-            x = nx;
+            else if(dir == 1) {
+                while(x+1 < n && grid[y][x+1] == 0) {
+                    x++;
+                    grid[y][x] = ++idx;
+                }
+            } else  {
+                while(y-1 >= 0 && x-1 >= 0 && grid[y-1][x-1] == 0) {
+                    y--; x--;
+                    grid[y][x] = ++idx;
+                }
+            }
+            dir = (dir + 1) % 3;
         }
         
         int index = 0;
-        int[] result = new int[v-1];
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j <= i; j++){
-                result[index++] = arr[i][j];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j <= i; j++) {
+                answer[index++] = grid[i][j];
             }
         }
-        return result;
+        
+        return answer;
     }
 }
