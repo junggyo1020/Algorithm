@@ -2,45 +2,44 @@ import java.util.*;
 
 class Solution {
     
-    static ArrayList<Integer>[] adj; //인접리스트
-    static boolean[] visited; //방문체크용 배열
+    static List<Integer>[] list;
+    static boolean[] visited;
     
-    private static void dfs(int start) {
-        for(int x : adj[start]) {
+    private static void dfs(int[][] computers, int pos) {
+        for(int x : list[pos]) {
             if(!visited[x]) {
                 visited[x] = true;
-                dfs(x);
+                dfs(computers, x);
             }
         }
     }
     
     public int solution(int n, int[][] computers) {
-        int answer = 0; //연결요소의 개수(= 네트워크 개수)
+        int answer = 0;
+        int N = computers.length;
+        visited = new boolean[n];
         
-        adj = new ArrayList[n+1];
-        for(int i = 1; i <= n; i++) {
-            adj[i] = new ArrayList<>();
+        list = new ArrayList[n];
+        for(int i = 0; i < n; i++) {
+            list[i] = new ArrayList<>();
         }
         
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                if(i == j) continue;
+        for(int i = 0; i < N; i++) {
+            for(int j = i+1; j < N; j++) {
                 if(computers[i][j] == 1) {
-                    adj[i+1].add(j+1);
+                    list[i].add(j);
+                    list[j].add(i);
                 }
             }
         }
         
-        visited = new boolean[n+1];
-        
-        for(int i = 1; i <= n; i++) {
+        for(int i = 0; i < n; i++) {
             if(!visited[i]) {
-                visited[i] = true;
-                dfs(i);
                 answer++;
+                visited[i] = true;
+                dfs(computers, i);
             }
         }
-        
         
         return answer;
     }
