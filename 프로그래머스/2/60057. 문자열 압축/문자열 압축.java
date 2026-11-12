@@ -1,58 +1,43 @@
-import java.util.*;
-
 class Solution {
-
-	static StringBuilder sb;
-	static StringBuilder result;
-	static String answer;
-	static int minLen;
-
     public int solution(String s) {
-		char[] ch = s.toCharArray();
+        int len = s.length();
+        int answer = len;
+        
+        for(int k = 1; k <= len/2; k++) {
+            StringBuilder sb = new StringBuilder();
+            String prev = "";
+            int count = 1;
+            int nextStart = 0;
+            for(int i = 0; i+k <= len; i+=k) {
+                String sub = s.substring(i, i+k);
+                if(sub.equals(prev)) {
+                    count++;
+                } else {
+                    flush(sb, prev, count);
+                    prev = sub;
+                    count = 1;
+                }
+                nextStart = i+k;
+            }
+            
+            flush(sb, prev, count);
+            
+            //남은 문자열은 그대로 붙여넣는다.
+            if(nextStart < len) {
+                sb.append(s.substring(nextStart));
+            }
+            
+            //길이 계산
+            int size = sb.toString().length();
 
-        //문자열 자르는 단위 순회
-		minLen = s.length();
-		for(int k = 1; k <= s.length(); k++) {
-			String prev = "";
-			result = new StringBuilder();
-			int cnt = 1;
-
-			int lastIdx = 0;
-			for(int i = 0; i+k < s.length(); i+=k) {
-				sb = new StringBuilder();
-				for(int j = i; j < i+k; j++) {
-					sb.append(ch[j]);
-				}
-				if(prev.equals(sb.toString())) {
-					cnt++;
-				} else {
-					if(cnt > 1) result.append(cnt);
-					result.append(sb);
-					prev = sb.toString();
-					cnt = 1;
-				}
-				lastIdx = i+k;
-			}
-
-			//나머지 부분 채우기
-			sb = new StringBuilder();
-			for(int i = lastIdx; i < s.length(); i++) {
-				sb.append(ch[i]);
-			}
-
-			if(prev.equals(sb.toString())) {
-				cnt++;
-				result.append(cnt);
-			} else {
-				if(cnt > 1) result.append(cnt);
-				result.append(sb);
-				prev = sb.toString();
-				cnt = 1;
-			}
-
-			if(result.length() < minLen) minLen = result.length();
-		}
-
-		return minLen;
+            //최소길이 갱신
+            answer = Math.min(answer, size);
+        }
+        return answer;
+    }
+    
+    private static void flush(StringBuilder sb, String prev, int count) {
+        if(count > 1) sb.append(count).append(prev);
+        else sb.append(prev);
     }
 }
